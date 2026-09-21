@@ -1,0 +1,35 @@
+---
+description: Pause for human review after every spec or implementation phase; do not continue in the same chat.
+alwaysApply: true
+---
+
+# Phase review gates
+
+This project uses Spec Kit. Each documentation slice and each implementation slice is a **hard stop**. The human reviews it, then starts a **new chat** for the next slice. Do not keep stacking phases in one context window.
+
+## What counts as a phase
+
+- Writing or amending constitution, project context, a specification, or a task list
+- Implementing one numbered feature slice (e.g. Phase 1, Phase 1.5, Phase 2)
+- A verification gate for that slice
+
+## After finishing a phase
+
+1. Summarize what was written or built.
+2. Tell the human what to review (paths).
+3. **Stop.** Do not start the next spec, the next phase, or any application code.
+
+## Approval is not implementation
+
+- "Looks good" / "approve the spec files" means **stamp the docs only**.
+- Implementation starts only on an explicit instruction: "implement Phase 1", "run T001", "start scaffolding".
+- Do not treat spec approval, task-list approval, or "that works" as a green light to code.
+
+## New chat for the next phase
+
+When the human is ready for the next slice, tell them to open a **new Agent chat** and point at the approved `.spec` files. Do not continue the next phase in the current thread.
+
+```text
+❌ BAD — spec approved, immediately run create-next-app and Phase 1.5 in the same chat
+✅ GOOD — spec approved, stop: "Review these four files. If you want code next, start a new chat and say implement Phase 1."
+```
