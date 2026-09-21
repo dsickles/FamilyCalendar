@@ -21,10 +21,6 @@
 /.next/
 /out/
 
-# Next.js AI agent stubs — Cursor rules live in .cursor/rules/
-/AGENTS.md
-/CLAUDE.md
-
 # production
 /build
 

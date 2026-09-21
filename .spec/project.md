@@ -204,7 +204,7 @@ Non-secret defaults (also env, documented in `.env.example`):
 |-------|--------|-------------|
 | 1 | Project scaffolding, types, PWA, kiosk CSS | Review complete 2026-09-21 |
 | 1.5 | PIN-gate, unlock UI, explicit relock, demo data, Docker, health | Review complete 2026-09-21; leftover (rate-limit UI vs refresh) reviewed and tested 2026-09-21 |
-| 2 | Calendar data engine | Deferred — do not start until a new chat says so |
+| 2 | Calendar data engine | Review 2026-09-21 — implemented T021–T026; do not start Phase 3 until a new chat says so |
 | 3 | Weather data engine | Deferred |
 | 4 | Base layout and ambient widgets | Deferred |
 | 5 | Month view (4-week rolling) | Deferred |
@@ -213,7 +213,7 @@ Non-secret defaults (also env, documented in `.env.example`):
 | 8 | Calendar idle reset (back to month view, not PIN) and kiosk polish | Deferred |
 | 9 | Real feeds, device test, README | Deferred |
 
-Phase 1 / 1.5 human review complete 2026-09-21. Rate-limit leftover reviewed and tested 2026-09-21. Next slice (Phase 2) requires a new Agent chat and an explicit "implement Phase 2" instruction.
+Phase 2 implementation complete 2026-09-21 (T021–T026). Human review of the calendar engine is next. Phase 3 (weather) requires a new Agent chat and an explicit implement instruction.
 
 ## Related Spec Kit Artifacts
 
@@ -224,3 +224,5 @@ Phase 1 / 1.5 human review complete 2026-09-21. Rate-limit leftover reviewed and
 | This context | `.spec/project.md` |
 | Phase 1 / 1.5 specification | `.spec/specifications/01-core-and-security.md` |
 | Phase 1 / 1.5 tasks | `.spec/tasks/01-core-tasks.md` |
+| Phase 2 specification | `.spec/specifications/02-calendar-engine.md` |
+| Phase 2 tasks | `.spec/tasks/02-calendar-tasks.md` |

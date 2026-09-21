@@ -29,3 +29,17 @@ export interface UnifiedEvent {
   isRecurring: boolean;
   originalUid: string;
 }
+
+export interface CalendarFeedError {
+  calendarId: string;
+  calendarLabel: string;
+  reason: "timeout" | "network" | "parse" | "unknown";
+}
+
+export interface CalendarApiResponse {
+  events: UnifiedEvent[];
+  fetchedAt: string;
+  stale: boolean;
+  cache: "hit" | "miss" | "stale";
+  errors: CalendarFeedError[];
+}
