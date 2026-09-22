@@ -30,7 +30,7 @@ export default function LockControl() {
         type="button"
         aria-label="Lock dashboard"
         onClick={() => setConfirming(true)}
-        className="absolute bottom-16 left-4 z-20 flex h-11 w-11 items-center justify-center rounded-full text-white/25 ring-1 ring-white/10 transition hover:text-white/50"
+        className="relative z-20 flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-white/25 ring-1 ring-white/10 transition hover:text-white/50"
       >
         <Lock className="h-5 w-5" aria-hidden />
       </button>

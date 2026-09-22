@@ -16,3 +16,12 @@ export interface WeatherData {
   }>;
   fetchedAt: string;
 }
+
+export interface WeatherApiResponse {
+  weather: WeatherData | null;
+  stale: boolean;
+  cache: "hit" | "miss" | "stale";
+  errors: Array<{
+    reason: "timeout" | "network" | "parse" | "unknown";
+  }>;
+}
