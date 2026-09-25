@@ -2,7 +2,7 @@
 
 **Feature ID**: `06-week-day-views`
 **Created**: 2026-09-22
-**Status**: Implemented 2026-09-22. T040–T043 complete. Human review next. Do not start Phase 7 in this thread.
+**Status**: Review complete 2026-09-25. Implemented 2026-09-22. T040–T043 complete. Do not start Phase 7 in this thread.
 **Input**: `.spec/project.md` Phase 6 ("Week and Day views") and the runtime shape (`CalendarViewMachine` → Month | Week | Day). `.spec/project.md` still lists Phases 3–5 as deferred. Phases 3, 4, and 5 are implemented (T027–T031, T032–T035, T036–T039). Trust `.spec/specifications/03-weather-engine.md`, `.spec/specifications/04-layout-widgets.md`, `.spec/specifications/05-month-view.md`, and `.spec/tasks/05-month-tasks.md`.
 **Constitution check**: Principle I (primary layout 1180×820, the same layout fills 1366×1024 and 1920×1080, zero document scroll, contained vertical scroll only inside the week time grid with `overscroll-behavior: contain`, 44×44pt targets), Principle II (no PIN, ICS URL, or lat/lon added to the client; events stay `UnifiedEvent` without `icsUrl`), Principle III (reuse the existing calendar SWR hook, no `setInterval`, no idle lock, no idle view-reset)
 **Project context**: `.spec/project.md`

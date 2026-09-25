@@ -1,5 +1,6 @@
 "use client";
 
+import { useRef, type PointerEvent } from "react";
 import {
   formatTime,
   getDayBounds,
@@ -82,6 +83,8 @@ export default function DayView({
   onNextDay,
 }: DayViewProps) {
   void weekStartDay;
+  const swipeStart = useRef<{ id: number; x: number; y: number } | null>(null);
+  const blockClickRef = useRef<((event: MouseEvent) => void) | null>(null);
   const { data, error } = useCalendar();
   const selected = dateFromKey(selectedDay, timezone);
   const heading = new Intl.DateTimeFormat("en-US", {
@@ -98,6 +101,55 @@ export default function DayView({
   const allDay = dayEvents?.filter((event) => event.isAllDay) ?? [];
   const timed = dayEvents?.filter((event) => !event.isAllDay) ?? [];
 
+  function clearBlockedClick(target: HTMLElement) {
+    if (!blockClickRef.current) {
+      return;
+    }
+    target.removeEventListener("click", blockClickRef.current, { capture: true });
+    blockClickRef.current = null;
+  }
+
+  function onSwipeStart(event: PointerEvent<HTMLDivElement>) {
+    if (event.button !== 0) {
+      return;
+    }
+    clearBlockedClick(event.currentTarget);
+    swipeStart.current = { id: event.pointerId, x: event.clientX, y: event.clientY };
+  }
+
+  function onSwipeEnd(event: PointerEvent<HTMLDivElement>) {
+    const start = swipeStart.current;
+    swipeStart.current = null;
+    if (!start || start.id !== event.pointerId) {
+      return;
+    }
+    const dx = event.clientX - start.x;
+    const dy = event.clientY - start.y;
+    if (Math.abs(dx) < 48 || Math.abs(dx) <= Math.abs(dy)) {
+      return;
+    }
+    const blockClick = (clickEvent: MouseEvent) => {
+      clickEvent.preventDefault();
+      clickEvent.stopPropagation();
+      if (blockClickRef.current === blockClick) {
+        blockClickRef.current = null;
+      }
+    };
+    blockClickRef.current = blockClick;
+    event.currentTarget.addEventListener("click", blockClick, { capture: true, once: true });
+    if (dx < 0) {
+      onNextDay();
+    } else {
+      onPreviousDay();
+    }
+  }
+
+  function onSwipeCancel(event: PointerEvent<HTMLDivElement>) {
+    if (swipeStart.current?.id === event.pointerId) {
+      swipeStart.current = null;
+    }
+  }
+
   return (
     <section aria-label="Day" className="flex h-full min-h-0 flex-col overflow-hidden px-6 pt-2 pb-3">
       <ViewToolbar
@@ -112,7 +164,12 @@ export default function DayView({
       {unavailable ? (
         <p className="shrink-0 pt-3 text-sm text-text-muted">Calendar unavailable</p>
       ) : null}
-      <div className="mt-3 flex min-h-0 flex-1 flex-col gap-2 overflow-hidden">
+      <div
+        className="mt-3 flex min-h-0 flex-1 touch-pan-y flex-col gap-2 overflow-hidden"
+        onPointerDown={onSwipeStart}
+        onPointerUp={onSwipeEnd}
+        onPointerCancel={onSwipeCancel}
+      >
         {allDay.map((event) => (
           <EventRow key={event.id} event={event} timeLabel="All day" />
         ))}

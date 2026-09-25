@@ -2,7 +2,7 @@
 
 **Feature ID**: `05-month-view`
 **Created**: 2026-09-22
-**Status**: Implemented 2026-09-22. T036–T039 complete. Human review next. Do not start Phase 6 in this thread.
+**Status**: Review complete 2026-09-25. Implemented 2026-09-22. T036–T039 complete. Do not start Phase 6 in this thread.
 **Input**: `.spec/project.md` Phase 5 ("Month view (4-week rolling)") and the runtime shape (`CalendarViewMachine` → Month is the only mode this phase builds). `.spec/project.md` still lists Phases 3 and 4 as deferred. Phase 3 is implemented (T027–T031). Phase 4 is implemented (T032–T035). Trust `.spec/specifications/03-weather-engine.md`, `.spec/tasks/03-weather-tasks.md`, `.spec/specifications/04-layout-widgets.md`, and `.spec/tasks/04-layout-tasks.md`.
 **Constitution check**: Principle I (1180×820 bound, zero document scroll, no contained scroll on the month grid — contained scroll is Week view only — scale to 1366×1024 and 1920×1080, 44×44pt on the existing lock control), Principle II (no PIN, ICS URL, or lat/lon added to the client; events are `UnifiedEvent` without `icsUrl`), Principle III (SWR cleans up on unmount, calendar poll aligned to the 600s cache TTL, last-known events over a blank wall, anchor date rolls overnight without `setInterval`, no idle lock)
 **Project context**: `.spec/project.md`

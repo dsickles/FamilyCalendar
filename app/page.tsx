@@ -35,6 +35,7 @@ export default async function Home({ searchParams }: PageProps<"/">) {
               timezone={config.timezone}
               weekStartDay={config.weekStartDay}
               timeFormat={config.timeFormat}
+              idleTimeoutMs={config.idleTimeoutMs}
               previewDemo={previewDemo}
             />
           }

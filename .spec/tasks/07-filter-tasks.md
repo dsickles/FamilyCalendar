@@ -4,7 +4,7 @@
 **Constitution**: `.spec/constitution.md` (v1.1.0)
 **Project context**: `.spec/project.md`
 **Source**: `.spec/project.md` Phase 7 (filter bar). Phases 3, 4, 5, and 6 are already implemented (T027–T043). Ignore the stale "Phase 3 deferred" through "Phase 8 deferred" rows in `.spec/project.md`.
-**Status**: Implemented 2026-09-22. T044–T050 complete. Revised the same day: chips are one per calendar, labeled "Filters:", color-matched to `calendarColor`. Do not start Phase 8 in this thread.
+**Status**: Review complete 2026-09-25. Implemented 2026-09-22. T044–T050 complete. Revised the same day: chips are one per calendar, labeled "Filters:", color-matched to `calendarColor`. Do not start Phase 8 in this thread.
 
 **Tests**: Not requested as a separate TDD suite. The phase has a
 **Verification** gate. That gate MUST pass before Phase 8.

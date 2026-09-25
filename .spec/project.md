@@ -1,8 +1,8 @@
 # Family Wall Dashboard — Project Context
 
-**Status**: Approved 2026-09-21
-**Constitution**: `.spec/constitution.md` (canonical Spec Kit copy: `.specify/memory/constitution.md` v1.1.0)
-**Scope of this document**: Vision, hardware, deployment architecture, and locked tech stack.
+**Status**: Approved 2026-09-21. Progress updated 2026-09-25.
+**Constitution**: `.spec/constitution.md` (canonical Spec Kit copy: `.specify/memory/constitution.md` v1.1.0, invariants unchanged)
+**Scope of this document**: Vision, hardware, deployment architecture, locked tech stack, and implementation progress.
 
 ## Vision
 
@@ -14,7 +14,7 @@ not a mobile app with navigation chrome.
 The running instance shows private family calendars and local weather. The
 GitHub repository is public; a live kiosk is not. Those two surfaces share
 code, never secrets. A fresh clone boots into **demo mode** with realistic
-sample events. A real deployment — **QNAP or Vercel** — loads live ICS feeds
+sample events. A real deployment — **a NAS or Vercel** — loads live ICS feeds
 behind the **same PIN-gate**. Once this iPad is unlocked, it is a view-only
 wall: the PIN pad does not return on a timer.
 
@@ -42,7 +42,7 @@ Primary device assumptions:
 - Guided Access enabled; hardware buttons disabled except Touch
 - Display auto-lock set to Never
 - Viewing distance ~3 ft (arm's-length wall mount)
-- Same LAN as the QNAP NAS (primary path)
+- Same LAN as the NAS (primary path)
 
 Resolved locale defaults (overridable via env, never hardcoded as secrets):
 
@@ -69,8 +69,8 @@ timeout. The wall iPad is mostly glance/view-only after the first unlock.
 | Session cookie | Unchanged (30-day `dash_session`) | Cookie is not expired |
 
 PIN is required again only after **explicit lock** (`POST /api/auth/lock`)
-or when the 30-day cookie expires / is cleared. Phase 8 implements the
-calendar idle reset and MUST NOT call the lock endpoint.
+or when the 30-day cookie expires / is cleared. Phase 8 implemented the
+calendar idle reset. That reset does not call the lock endpoint.
 
 ## Dual-Path Deployment Architecture
 
@@ -85,7 +85,7 @@ calendar idle reset and MUST NOT call the lock endpoint.
               ▼                                         ▼
    ┌─────────────────────┐                   ┌─────────────────────┐
    │ Path A — PRIMARY    │                   │ Path B — OPTIONAL   │
-   │ Docker on QNAP NAS  │                   │ Vercel              │
+   │ Docker on a NAS     │                   │ Vercel              │
    │ LAN + same PIN-gate │                   │ Same PIN-gate       │
    │ :3000               │                   │ + optional Vercel   │
    │                     │                   │   Auth layer        │
@@ -101,7 +101,7 @@ Both paths run the **same Next.js PIN-gate**. LAN isolation on Path A is
 extra defense, not a substitute. Demo mode (no `CAL_*_URL`) is the only
 path that skips the PIN.
 
-### Path A — Docker on QNAP NAS (primary kiosk)
+### Path A — Docker on a NAS (primary kiosk)
 
 Most private option. The dashboard stays on the home network **and** still
 requires the application PIN. Constitution: both deploy paths MUST enforce
@@ -125,7 +125,7 @@ not a different auth model.
 
 - GitHub integration deploy
 - `CAL_*` and `DASHBOARD_PIN` set as Vercel Environment Variables
-- Application PIN-gate is mandatory (identical middleware as QNAP)
+- Application PIN-gate is mandatory (identical middleware as the NAS)
 - Vercel Deployment Protection (Vercel Authentication) MAY be a second
   layer; it MUST NOT replace the PIN-gate
 - Hobby-plan Vercel Auth restricts the URL to the operator's Vercel
@@ -147,11 +147,11 @@ amendment plus a plan revision.
 | Calendar parse | node-ical (RRULE expansion) | `node-ical ^0.20.0` |
 | Client data | SWR | `swr ^2.3.0` |
 | Weather | Open-Meteo (no API key) | HTTPS forecast API |
-| Runtime (kiosk) | Node 20 Alpine in Docker | QNAP Container Station |
+| Runtime (kiosk) | Node 20 Alpine in Docker | NAS with Docker |
 | Runtime (optional) | Vercel | Hobby-compatible |
 | PWA | `app/manifest.ts` + Apple web-app meta | standalone / landscape |
 
-Scaffold command (Phase 1, **not executed until spec approval**):
+Scaffold command used for Phase 1 (already executed):
 
 ```text
 npx -y create-next-app@latest ./ --typescript --tailwind --eslint --app --src-dir=false --import-alias="@/*" --turbopack
@@ -181,8 +181,8 @@ only on the server.
 
 ## Configuration Model
 
-All runtime config is environment-variable-driven (`lib/config.ts` once
-implemented). Sensitive keys:
+All runtime config is environment-variable-driven (`lib/config.ts`).
+Sensitive keys:
 
 - `DASHBOARD_PIN` — 4–8 digit PIN, server-side only
 - `CAL_<ID>_URL` — ICS subscription URLs, server-side only
@@ -200,20 +200,22 @@ Non-secret defaults (also env, documented in `.env.example`):
 
 ## Implementation Phasing (context only)
 
-| Phase | Intent | Spec status |
-|-------|--------|-------------|
-| 1 | Project scaffolding, types, PWA, kiosk CSS | Review complete 2026-09-21 |
-| 1.5 | PIN-gate, unlock UI, explicit relock, demo data, Docker, health | Review complete 2026-09-21; leftover (rate-limit UI vs refresh) reviewed and tested 2026-09-21 |
-| 2 | Calendar data engine | Review 2026-09-21 — implemented T021–T026; do not start Phase 3 until a new chat says so |
-| 3 | Weather data engine | Deferred |
-| 4 | Base layout and ambient widgets | Deferred |
-| 5 | Month view (4-week rolling) | Deferred |
-| 6 | Week and Day views | Deferred |
-| 7 | Filter bar | Deferred |
-| 8 | Calendar idle reset (back to month view, not PIN) and kiosk polish | Deferred |
-| 9 | Real feeds, device test, README | Deferred |
+Planned slices are 1 through 9. There is no Phase 10. Phases 1 through 9 are review complete.
 
-Phase 2 implementation complete 2026-09-21 (T021–T026). Human review of the calendar engine is next. Phase 3 (weather) requires a new Agent chat and an explicit implement instruction.
+| Phase | Intent | Status |
+|-------|--------|--------|
+| 1 | Project scaffolding, types, PWA, kiosk CSS | Review complete 2026-09-21 (with Phase 1.5, T001–T020) |
+| 1.5 | PIN-gate, unlock UI, explicit relock, demo data, Docker, health | Review complete 2026-09-21; rate-limit leftover reviewed and tested 2026-09-21 |
+| 2 | Calendar data engine | Review complete 2026-09-25 (implemented 2026-09-21, T021–T026) |
+| 3 | Weather data engine | Review complete 2026-09-25 (implemented 2026-09-21, T027–T031) |
+| 4 | Base layout and ambient widgets | Review complete 2026-09-25 (implemented 2026-09-22, T032–T035) |
+| 5 | Month view (4-week rolling) | Review complete 2026-09-25 (implemented 2026-09-22, T036–T039) |
+| 6 | Week and Day views | Review complete 2026-09-25 (implemented 2026-09-22, T040–T043) |
+| 7 | Filter bar (one chip per calendar) | Review complete 2026-09-25 (implemented 2026-09-22, T044–T050) |
+| 8 | Calendar idle reset (back to month view, not PIN) and kiosk polish | Review complete 2026-09-25 (implemented 2026-09-22, T051–T055) |
+| 9 | Real feeds, device test, README | Review complete 2026-09-25 (implemented 2026-09-25, T056–T058) |
+
+The shipped wall is the Phase 9 tree: demo mode with no `CAL_*_URL`, live ICS behind the same PIN-gate, header clock and weather, calendar filter chips, month / week / day, and idle return to the month grid. `README.md` matches that wall. Do not start a Phase 10.
 
 ## Related Spec Kit Artifacts
 
@@ -226,3 +228,17 @@ Phase 2 implementation complete 2026-09-21 (T021–T026). Human review of the ca
 | Phase 1 / 1.5 tasks | `.spec/tasks/01-core-tasks.md` |
 | Phase 2 specification | `.spec/specifications/02-calendar-engine.md` |
 | Phase 2 tasks | `.spec/tasks/02-calendar-tasks.md` |
+| Phase 3 specification | `.spec/specifications/03-weather-engine.md` |
+| Phase 3 tasks | `.spec/tasks/03-weather-tasks.md` |
+| Phase 4 specification | `.spec/specifications/04-layout-widgets.md` |
+| Phase 4 tasks | `.spec/tasks/04-layout-tasks.md` |
+| Phase 5 specification | `.spec/specifications/05-month-view.md` |
+| Phase 5 tasks | `.spec/tasks/05-month-tasks.md` |
+| Phase 6 specification | `.spec/specifications/06-week-day-views.md` |
+| Phase 6 tasks | `.spec/tasks/06-week-day-tasks.md` |
+| Phase 7 specification | `.spec/specifications/07-filter-bar.md` |
+| Phase 7 tasks | `.spec/tasks/07-filter-tasks.md` |
+| Phase 8 specification | `.spec/specifications/08-idle-reset.md` |
+| Phase 8 tasks | `.spec/tasks/08-idle-tasks.md` |
+| Phase 9 specification | `.spec/specifications/09-real-feeds.md` |
+| Phase 9 tasks | `.spec/tasks/09-real-feeds-tasks.md` |

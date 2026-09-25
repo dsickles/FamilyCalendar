@@ -2,7 +2,7 @@
 
 **Feature ID**: `07-filter-bar`
 **Created**: 2026-09-22
-**Status**: Implemented 2026-09-22. Revised the same day: chips are one per calendar (`calendarId`, `calendarLabel`, `calendarColor`), not per category. Human review next. Do not start Phase 8 in this thread.
+**Status**: Review complete 2026-09-25. Implemented 2026-09-22. Revised the same day: chips are one per calendar (`calendarId`, `calendarLabel`, `calendarColor`), not per category. Do not start Phase 8 in this thread.
 **Input**: `.spec/project.md` Phase 7 ("Filter bar") and the runtime shape (client chips subset an already-fetched `UnifiedEvent[]`). `.spec/project.md` still lists Phases 3–8 as deferred. Phases 3, 4, 5, and 6 are implemented (T027–T043). Trust `.spec/specifications/03-weather-engine.md` through `.spec/specifications/06-week-day-views.md` and `.spec/tasks/03-weather-tasks.md` through `.spec/tasks/06-week-day-tasks.md`. Phase 6 navigation in the code is ahead of `.spec/specifications/06-week-day-views.md`. Trust the code for that navigation.
 **Constitution check**: Principle I (primary layout 1180×820, the same layout fills 1366×1024 and 1920×1080, zero document scroll, contained vertical scroll only inside the week time grid with `overscroll-behavior: contain`, 44×44pt targets), Principle II (no PIN, ICS URL, or lat/lon added to the client; chips use `calendarCategory` only), Principle III (reuse the existing calendar SWR hook, no new fetch, no `setInterval`, no idle lock, no idle view-reset)
 **Project context**: `.spec/project.md`

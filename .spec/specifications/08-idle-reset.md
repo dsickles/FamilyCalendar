@@ -2,7 +2,7 @@
 
 **Feature ID**: `08-idle-reset`
 **Created**: 2026-09-22
-**Status**: Draft — awaiting review. Do not implement until an explicit "implement Phase 8".
+**Status**: Review complete 2026-09-25. Implemented 2026-09-22. T051–T055 complete. Do not start Phase 9 in this thread.
 **Input**: `.spec/project.md` Phase 8 ("Calendar idle reset (back to month view, not PIN) and kiosk polish") and the idle-timeout table. `.spec/project.md` still lists Phases 3–8 as deferred. Phases 1, 1.5, 2, 3, 4, 5, 6, and 7 are implemented (through T050). Trust `.spec/specifications/03-weather-engine.md` through `.spec/specifications/07-filter-bar.md` and `.spec/tasks/03-weather-tasks.md` through `.spec/tasks/07-filter-tasks.md`. Where those specs disagree with the tree, trust the code.
 **Constitution check**: Principle I (1180×820 fills that viewport; 1366×1024 and 1920×1080 fill those viewports; below 1180 on either edge the 1180×820 layout scales down; zero document scroll; contained vertical scroll only inside the week time grid with `overscroll-behavior: contain`; 44×44pt targets), Principle II (pass only the idle timeout number to the client; no PIN, ICS URL, or lat/lon; idle never calls `POST /api/auth/lock`), Principle III (after `IDLE_TIMEOUT_MS`, default 90_000, with no pointer or touch activity, Week or Day returns to the today-anchored month view; the timer cleans up on unmount; the session cookie stays valid)
 **Project context**: `.spec/project.md`

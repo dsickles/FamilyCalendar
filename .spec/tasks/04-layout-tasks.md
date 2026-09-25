@@ -4,7 +4,7 @@
 **Constitution**: `.spec/constitution.md` (v1.1.0)
 **Project context**: `.spec/project.md`
 **Source**: `.spec/project.md` Phase 4 (base layout and ambient widgets). Phase 3 is already implemented (T027–T031); ignore the stale "Phase 3 deferred" row in `.spec/project.md`.
-**Status**: Implemented 2026-09-22. T032–T035 complete. Human review next. Do not start Phase 5 until a new chat explicitly asks for it.
+**Status**: Review complete 2026-09-25. Implemented 2026-09-22. T032–T035 complete. Do not start Phase 5 until a new chat explicitly asks for it.
 
 **Tests**: Not requested as a separate TDD suite. The phase has a
 **Verification** gate. That gate MUST pass before Phase 5.

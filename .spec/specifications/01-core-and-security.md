@@ -49,7 +49,7 @@ PIN is entered on a touch PIN pad. A valid session lasts 30 days via an
 httpOnly cookie.
 
 **Why this priority**: Live family data on a public URL (Vercel) or a LAN
-IP (QNAP) is the core privacy threat.
+IP (NAS) is the core privacy threat.
 
 **Independent Test**: Set `DASHBOARD_PIN=1234` and a dummy `CAL_PERSONAL_URL`.
 Unauthenticated `GET /` redirects to `/unlock`. Correct PIN sets
@@ -138,7 +138,7 @@ the blank shell has no document scrollbars and no rubber-band bounce.
 
 ### User Story 4 — Appliance can be health-checked and containerized (Priority: P2)
 
-QNAP Container Station (or Docker Compose) can build, run, restart, and
+NAS Container Station (or Docker Compose) can build, run, restart, and
 probe the app without baking secrets into the image.
 
 **Why this priority**: Primary deployment path is Docker on the NAS.
@@ -167,9 +167,9 @@ match the Master Plan. `GET /api/health` returns 200 with no auth.
   `/_next/`, `/icons/`, and the manifest route so the unlock page and
   PWA assets can load.
 - Rate limiter is in-memory and resets on process restart (acceptable for
-  single-node QNAP; documented limitation on multi-instance Vercel).
+  single-node NAS; documented limitation on multi-instance Vercel).
 - Cookie `secure` is true in production and false on LAN HTTP so the
-  QNAP kiosk can authenticate without TLS.
+  NAS kiosk can authenticate without TLS.
 - `.env.example` is committed; `.env.local` is never committed.
 - Unlock UI MUST NOT hint at the PIN length beyond accepting 4–8 digits,
   and MUST NOT echo the PIN in the URL or logs.
@@ -452,7 +452,7 @@ where `<ID>` is an alphanumeric slug and `CATEGORY` is
 - Next.js App Router on Next 15 is the only web framework.
 - Tailwind v4 CSS-first (`@import "tailwindcss"`) is used; no v3
   `tailwind.config.js` requirement.
-- QNAP Docker is a single Node process, so in-memory rate limits are
+- NAS Docker is a single Node process, so in-memory rate limits are
   acceptable. Multi-region Vercel rate limiting is best-effort.
 - Health check uses `curl` inside the Alpine runner; if curl is absent
   from the image, implementation MUST add it or switch the probe to a

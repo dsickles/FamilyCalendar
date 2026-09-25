@@ -4,7 +4,7 @@
 **Constitution**: `.spec/constitution.md` (v1.1.0)
 **Project context**: `.spec/project.md`
 **Source**: `.spec/project.md` Phase 8 (calendar idle reset and kiosk polish). Phases 1, 1.5, 2, 3, 4, 5, 6, and 7 are already implemented (through T050). Ignore the stale "Phase 3 deferred" through "Phase 8 deferred" rows in `.spec/project.md`.
-**Status**: Draft — awaiting review. Do not implement until an explicit "implement Phase 8".
+**Status**: Review complete 2026-09-25. Implemented 2026-09-22. T051–T055 complete. Do not start Phase 9 in this thread.
 
 **Tests**: Not requested as a separate TDD suite. The phase has a
 **Verification** gate. That gate MUST pass before Phase 9.
@@ -62,7 +62,7 @@ the day or the week without taking the week time grid's scroll.
 toolbars. Idle and swipe do not add a scroller and do not call
 `POST /api/auth/lock`.
 
-- [ ] T051 [US1] Step 8.1 — Pass the timeout number into the machine.
+- [x] T051 [US1] Step 8.1 — Pass the timeout number into the machine.
       In `app/page.tsx`, pass `idleTimeoutMs={config.idleTimeoutMs}` on
       `CalendarViewMachine`. Pass nothing else new: no latitude, no
       longitude, no `cacheRevalidateSeconds`, no calendar sources, no
@@ -72,7 +72,7 @@ toolbars. Idle and swipe do not add a scroller and do not call
       `idleTimeoutMs: number`. Do not import `lib/config.ts`. Do not
       arm a timer in this task. File: `app/page.tsx`,
       `components/calendar/CalendarViewMachine.tsx`.
-- [ ] T052 [US1] Step 8.2 — Arm the view-reset and stop writing
+- [x] T052 [US1] Step 8.2 — Arm the view-reset and stop writing
       `lastInteractionAt: 0` on user actions. In
       `components/calendar/CalendarViewMachine.tsx`, treat a non-finite
       or non-positive `idleTimeoutMs` as `90_000`. `setFilters`,
@@ -90,7 +90,7 @@ toolbars. Idle and swipe do not add a scroller and do not call
       unmount. Do not call `fetch`, do not `POST /api/auth/lock`, and
       do not navigate to `/unlock`. Do not add `setInterval`. File:
       `components/calendar/CalendarViewMachine.tsx`.
-- [ ] T053 [P] [US2] Step 8.3 — Swipe the day list. In
+- [x] T053 [P] [US2] Step 8.3 — Swipe the day list. In
       `components/calendar/DayView.tsx`, on the event-list container
       under `ViewToolbar` (the `overflow-hidden` body, including the
       empty "No events" state), track a pointer gesture. On `pointerup`,
@@ -101,7 +101,7 @@ toolbars. Idle and swipe do not add a scroller and do not call
       stays a tap. Leave the list `overflow: hidden`. Do not edit
       `ViewToolbar.tsx`. Do not add a dependency. File:
       `components/calendar/DayView.tsx`.
-- [ ] T054 [P] [US2] Step 8.3 — Swipe the week chrome only. In
+- [x] T054 [P] [US2] Step 8.3 — Swipe the week chrome only. In
       `components/calendar/WeekView.tsx`, use the same 48px rule on the
       day-header row and the all-day band. Left calls `onNextWeek`,
       right calls `onPreviousWeek`, and a qualifying swipe suppresses
@@ -111,7 +111,7 @@ toolbars. Idle and swipe do not add a scroller and do not call
       header and all-day rows. A gesture that begins in "Week hours"
       must not change `selectedWeekStart`. Do not edit
       `ViewToolbar.tsx`. File: `components/calendar/WeekView.tsx`.
-- [ ] T055 [US1] [US2] Step 8.4 — Verification only (no new product
+- [x] T055 [US1] [US2] Step 8.4 — Verification only (no new product
       files). Run the app and check `/?demo=1` in the browser per the
       gate below, at 1180×820 on month, week, and day. Also confirm
       1366×1024 and 1920×1080 still fill the viewport with no document

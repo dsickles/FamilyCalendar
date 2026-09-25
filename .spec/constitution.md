@@ -3,7 +3,7 @@
 > Canonical Spec Kit copy: `.specify/memory/constitution.md` (v1.1.0).
 > This file is the reviewable extract of the same ratification.
 >
-> **Status**: Approved 2026-09-21 — implementation of Phase 1 / 1.5 is authorized.
+> **Status**: Approved 2026-09-21. Invariants unchanged (v1.1.0). Implementation progress through Phase 9 is in `.spec/project.md`.
 
 ## Core Principles
 
@@ -110,11 +110,11 @@ display until someone with the Guided Access PIN intervenes.
 
 ## Dual-Path Deployment Constraints
 
-Primary runtime is Docker on a QNAP NAS (LAN-only kiosk). Optional runtime
+Primary runtime is Docker on a NAS (LAN-only kiosk). Optional runtime
 is a PIN-protected Vercel deployment. Both paths MUST obey the same
 constitution.
 
-- QNAP MUST NOT require public port forwarding. The iPad reaches the NAS
+- The NAS MUST NOT require public port forwarding. The iPad reaches the NAS
   on the local network only.
 - Vercel MUST set `CAL_*` and `DASHBOARD_PIN` as platform environment
   variables. PIN-gate is the application control. Vercel Deployment

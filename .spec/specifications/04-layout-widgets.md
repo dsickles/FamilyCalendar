@@ -2,7 +2,7 @@
 
 **Feature ID**: `04-layout-widgets`
 **Created**: 2026-09-22
-**Status**: Implemented 2026-09-22. T032–T035 complete. Human review next. Do not start Phase 5 in this thread.
+**Status**: Review complete 2026-09-25. Implemented 2026-09-22. T032–T035 complete. Do not start Phase 5 in this thread.
 **Input**: `.spec/project.md` Phase 4 ("Base layout and ambient widgets") and the runtime shape (`DashboardPage` → clock and weather on the PWA shell). `.spec/project.md` still lists Phase 3 as deferred; Phase 3 is implemented (T027–T031). Trust `.spec/specifications/03-weather-engine.md` and `.spec/tasks/03-weather-tasks.md`.
 **Constitution check**: Principle I (1180×820 bound, zero document scroll, 44×44pt targets, scale to 1366×1024 and 1920×1080), Principle II (no PIN, ICS URL, or lat/lon added to the client), Principle III (clock is `requestAnimationFrame`, re-render only when the displayed minute changes, SWR cleans up on unmount, last-known weather over a blank header)
 **Project context**: `.spec/project.md`

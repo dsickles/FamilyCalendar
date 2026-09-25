@@ -2,7 +2,7 @@
 
 **Feature ID**: `03-weather-engine`
 **Created**: 2026-09-21
-**Status**: Implemented 2026-09-21. Human review next. Do not start Phase 4 in this thread.
+**Status**: Review complete 2026-09-25. Implemented 2026-09-21. Do not start Phase 4 in this thread.
 **Input**: `.spec/project.md` phasing, `WeatherData` and weather env defaults in `.spec/specifications/01-core-and-security.md`, cache/API envelope pattern in `.spec/specifications/02-calendar-engine.md`
 **Constitution check**: Principle II (PIN-gate already covers `/api/weather`; lat/lon are non-secret defaults; no API key; ICS URLs and PIN stay server-side) and Principle III (explicit 1800s TTL, bounded cache key, 8s fetch timeout, last-known data over a blank wall)
 **Project context**: `.spec/project.md`
@@ -236,7 +236,7 @@ PIN-gate and the calendar engine stay unchanged. Demo mode may call Open-Meteo w
 - Open-Meteo `https://api.open-meteo.com/v1/forecast` stays keyless. Verification needs outbound HTTPS to that host.
 - `WeatherData`, `getDashboardConfig()`, `isDemoMode()`, and the PIN-gate already match Phase 1 / 1.5. Weather TTL is a constant 1800s, not `CACHE_REVALIDATE_SECONDS`.
 - Default location remains Scarsdale (`40.9892`, `-73.7944`, display name `Scarsdale, NY`), timezone `America/New_York`, temperature Fahrenheit.
-- QNAP is a single Node process; dropping the memory cache on restart is acceptable.
+- NAS is a single Node process; dropping the memory cache on restart is acceptable.
 - Phase 4 will render Lucide icons from the `icon` string. This phase does not mount a widget.
 - `daily[0]` is "today" in the requested timezone as Open-Meteo defines it. The 3-day check is `daily.length >= 3` plus well-formed dates, highs, lows, codes, and precipitation probabilities.
 

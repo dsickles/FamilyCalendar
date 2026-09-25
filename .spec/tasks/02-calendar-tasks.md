@@ -4,7 +4,7 @@
 **Constitution**: `.spec/constitution.md` (v1.1.0)
 **Project context**: `.spec/project.md`
 **Source**: Implementation Master Plan — Phase 2
-**Status**: Implemented 2026-09-21. T021–T026 complete. Human review next. Do not start Phase 3 until a new chat explicitly asks for it.
+**Status**: Review complete 2026-09-25. Implemented 2026-09-21. T021–T026 complete. Do not start Phase 3 until a new chat explicitly asks for it.
 
 **Tests**: Not requested as a separate TDD suite. The phase has a
 **Verification** gate copied from the Master Plan (envelope field

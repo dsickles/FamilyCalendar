@@ -4,7 +4,7 @@
 **Constitution**: `.spec/constitution.md` (v1.1.0)
 **Project context**: `.spec/project.md`
 **Source**: `.spec/project.md` Phase 6 (week and day views). Phases 3, 4, and 5 are already implemented (T027–T031, T032–T035, T036–T039). Ignore the stale "Phase 3 deferred", "Phase 4 deferred", and "Phase 5 deferred" rows in `.spec/project.md`.
-**Status**: Implemented 2026-09-22. T040–T043 complete. Human review next. Do not start Phase 7 until a new chat explicitly asks for it.
+**Status**: Review complete 2026-09-25. Implemented 2026-09-22. T040–T043 complete. Do not start Phase 7 until a new chat explicitly asks for it.
 
 **Tests**: Not requested as a separate TDD suite. The phase has a
 **Verification** gate. That gate MUST pass before Phase 7.

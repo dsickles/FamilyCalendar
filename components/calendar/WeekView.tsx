@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type PointerEvent } from "react";
 import {
   calendarDateParts,
   formatTime,
@@ -122,6 +122,8 @@ export default function WeekView({
   void weekStartDay;
   const { data, error } = useCalendar();
   const scrollerRef = useRef<HTMLDivElement>(null);
+  const swipeStart = useRef<{ id: number; x: number; y: number } | null>(null);
+  const blockClickRef = useRef<((event: MouseEvent) => void) | null>(null);
   const [todayKey, setTodayKey] = useState("");
   const [scrollbarWidth, setScrollbarWidth] = useState(0);
   const anchor = dateFromKey(selectedWeekStart, timezone);
@@ -174,6 +176,55 @@ export default function WeekView({
       containsToday && hour !== 0 ? (hour - 1) * HOUR_HEIGHT : 7 * HOUR_HEIGHT;
   }, [selectedWeekStart, timezone]);
 
+  function clearBlockedClick(target: HTMLElement) {
+    if (!blockClickRef.current) {
+      return;
+    }
+    target.removeEventListener("click", blockClickRef.current, { capture: true });
+    blockClickRef.current = null;
+  }
+
+  function onSwipeStart(event: PointerEvent<HTMLDivElement>) {
+    if (event.button !== 0) {
+      return;
+    }
+    clearBlockedClick(event.currentTarget);
+    swipeStart.current = { id: event.pointerId, x: event.clientX, y: event.clientY };
+  }
+
+  function onSwipeEnd(event: PointerEvent<HTMLDivElement>) {
+    const start = swipeStart.current;
+    swipeStart.current = null;
+    if (!start || start.id !== event.pointerId) {
+      return;
+    }
+    const dx = event.clientX - start.x;
+    const dy = event.clientY - start.y;
+    if (Math.abs(dx) < 48 || Math.abs(dx) <= Math.abs(dy)) {
+      return;
+    }
+    const blockClick = (clickEvent: MouseEvent) => {
+      clickEvent.preventDefault();
+      clickEvent.stopPropagation();
+      if (blockClickRef.current === blockClick) {
+        blockClickRef.current = null;
+      }
+    };
+    blockClickRef.current = blockClick;
+    event.currentTarget.addEventListener("click", blockClick, { capture: true, once: true });
+    if (dx < 0) {
+      onNextWeek();
+    } else {
+      onPreviousWeek();
+    }
+  }
+
+  function onSwipeCancel(event: PointerEvent<HTMLDivElement>) {
+    if (swipeStart.current?.id === event.pointerId) {
+      swipeStart.current = null;
+    }
+  }
+
   return (
     <section aria-label="Week" className="flex h-full min-h-0 flex-col overflow-hidden px-6 pt-2 pb-3">
       <ViewToolbar
@@ -185,6 +236,12 @@ export default function WeekView({
         onShowFourWeeks={onShowMonth}
       />
       {unavailable ? <p className="shrink-0 pt-2 text-sm text-text-muted">Calendar unavailable</p> : null}
+      <div
+        className="shrink-0 touch-pan-y"
+        onPointerDown={onSwipeStart}
+        onPointerUp={onSwipeEnd}
+        onPointerCancel={onSwipeCancel}
+      >
       <div
         className="mt-3 grid shrink-0 grid-cols-[5rem_repeat(7,minmax(0,1fr))]"
         style={{ paddingRight: scrollbarWidth }}
@@ -245,6 +302,7 @@ export default function WeekView({
             </div>
           );
         })}
+      </div>
       </div>
       <div
         ref={scrollerRef}

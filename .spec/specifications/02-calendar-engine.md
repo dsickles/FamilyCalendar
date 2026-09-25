@@ -2,7 +2,7 @@
 
 **Feature ID**: `02-calendar-engine`
 **Created**: 2026-09-21
-**Status**: Implemented 2026-09-21. Human review next. Do not start Phase 3 in this thread.
+**Status**: Review complete 2026-09-25. Implemented 2026-09-21. Do not start Phase 3 in this thread.
 **Input**: Implementation Master Plan, Phase 2 (Calendar Data Engine)
 **Constitution check**: Principles II (ICS URLs server-side only; PIN-gate already covers `/api/calendar`; demo mode uses built-in sample data) and III (8s per-feed timeout, `Promise.allSettled`, 600s in-memory cache, stale-cache over a blank wall)
 **Project context**: `.spec/project.md`
@@ -273,7 +273,7 @@ ICS URLs never leave the server. PIN-gate is unchanged.
   `getCalendarSources()` / `isDemoMode()` / PIN-gate are already
   implemented and in bounds.
 - Dashboard timezone default remains `America/New_York`.
-- QNAP is a single Node process; in-memory cache reset on restart is
+- NAS is a single Node process; in-memory cache reset on restart is
   acceptable (same class of limitation as the PIN rate limiter).
 - Phase 4 SWR will consume this envelope; this phase does not mount a
   client hook or draw events.

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DayView from "@/components/calendar/DayView";
 import FilterBar from "@/components/calendar/FilterBar";
 import MonthView from "@/components/calendar/MonthView";
@@ -20,8 +20,17 @@ type CalendarViewMachineProps = {
   timezone: string;
   weekStartDay: WeekStartDay;
   timeFormat: TimeFormat;
+  idleTimeoutMs: number;
   previewDemo?: boolean;
 };
+
+const DEFAULT_IDLE_TIMEOUT_MS = 90_000;
+
+function resolveIdleTimeout(idleTimeoutMs: number): number {
+  return Number.isFinite(idleTimeoutMs) && idleTimeoutMs > 0
+    ? idleTimeoutMs
+    : DEFAULT_IDLE_TIMEOUT_MS;
+}
 
 const initialState: CalendarViewState = {
   mode: "month",
@@ -53,15 +62,49 @@ export default function CalendarViewMachine({
   timezone,
   weekStartDay,
   timeFormat,
+  idleTimeoutMs,
   previewDemo = false,
 }: CalendarViewMachineProps) {
   const [view, setView] = useState<CalendarViewState>(initialState);
+  const timeoutMs = resolveIdleTimeout(idleTimeoutMs);
+
+  useEffect(() => {
+    if (view.mode === "month") {
+      return;
+    }
+    const startedAt = view.lastInteractionAt;
+    const elapsed = startedAt > 0 ? Date.now() - startedAt : 0;
+    const remaining = Math.max(0, timeoutMs - elapsed);
+    const id = window.setTimeout(() => {
+      setView((current) => {
+        if (current.mode !== "week" && current.mode !== "day") {
+          return current;
+        }
+        if (current.lastInteractionAt !== startedAt) {
+          return current;
+        }
+        return {
+          ...current,
+          mode: "month",
+          lastInteractionAt: Date.now(),
+        };
+      });
+    }, remaining);
+    return () => window.clearTimeout(id);
+  }, [view.mode, view.lastInteractionAt, timeoutMs]);
+
+  function markInteraction() {
+    const now = Date.now();
+    setView((current) =>
+      current.lastInteractionAt === now ? current : { ...current, lastInteractionAt: now },
+    );
+  }
 
   function setFilters(activeFilters: string[]) {
     setView((current) => ({
       ...current,
       activeFilters,
-      lastInteractionAt: 0,
+      lastInteractionAt: Date.now(),
     }));
   }
 
@@ -69,7 +112,7 @@ export default function CalendarViewMachine({
     setView((current) => ({
       ...current,
       mode: "month",
-      lastInteractionAt: 0,
+      lastInteractionAt: Date.now(),
     }));
   }
 
@@ -78,7 +121,7 @@ export default function CalendarViewMachine({
       ...current,
       mode: "week",
       anchorDate: current.selectedWeekStart ?? current.anchorDate,
-      lastInteractionAt: 0,
+      lastInteractionAt: Date.now(),
     }));
   }
 
@@ -89,7 +132,7 @@ export default function CalendarViewMachine({
       selectedDay: current.selectedDay,
       selectedWeekStart: weekStartKey,
       activeFilters: current.activeFilters,
-      lastInteractionAt: 0,
+      lastInteractionAt: Date.now(),
     }));
   }
 
@@ -105,7 +148,7 @@ export default function CalendarViewMachine({
         selectedDay: next,
         selectedWeekStart: weekStartFor(next, weekStartDay, timezone),
         activeFilters: current.activeFilters,
-        lastInteractionAt: 0,
+        lastInteractionAt: Date.now(),
       };
     });
   }
@@ -121,7 +164,7 @@ export default function CalendarViewMachine({
         mode: "week",
         anchorDate: next,
         selectedWeekStart: next,
-        lastInteractionAt: 0,
+        lastInteractionAt: Date.now(),
       };
     });
   }
@@ -135,7 +178,7 @@ export default function CalendarViewMachine({
         ? weekStartFor(dateKey, weekStartDay, timezone)
         : current.selectedWeekStart,
       activeFilters: current.activeFilters,
-      lastInteractionAt: 0,
+      lastInteractionAt: Date.now(),
     }));
   }
 
@@ -181,7 +224,11 @@ export default function CalendarViewMachine({
 
   return (
     <CalendarPreviewProvider enabled={previewDemo}>
-      <div className="flex h-full min-h-0 flex-col overflow-hidden">
+      <div
+        className="flex h-full min-h-0 flex-col overflow-hidden"
+        onPointerDown={markInteraction}
+        onWheel={markInteraction}
+      >
         <FilterBar activeFilters={view.activeFilters} onChange={setFilters} />
         <div className="min-h-0 flex-1 overflow-hidden">{calendar}</div>
       </div>

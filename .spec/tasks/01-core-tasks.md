@@ -237,7 +237,7 @@ After Phase 1 verification:
 
 Phase 1 + US1 (demo boot) is the smallest demoable slice. US2 (PIN-gate)
 is required before any live feed work. US3 and US4 are required before
-iPad / QNAP install.
+iPad / NAS install.
 
 ---
 
