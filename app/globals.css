@@ -65,26 +65,164 @@ body {
   container-type: size;
 }
 
+.kiosk-fit {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+}
+
 .kiosk-stage {
   width: 100%;
   height: 100%;
   overflow: hidden;
 }
 
+/*
+  Below 1180×820 the stage is the fixed wall layout, scaled to fit.
+  transform does not shrink the layout box, so the fit wrapper is sized to
+  the painted result and the stage scales from the top left inside it.
+  Otherwise overflow:hidden on the frame clips the centered paint and a
+  phone sees a black field or a sliver of type at the far edge.
+*/
 @container (max-width: 1179px) {
+  .kiosk-fit {
+    position: relative;
+    width: calc(1180px * min(100cqw / 1180px, 100cqh / 820px));
+    height: calc(820px * min(100cqw / 1180px, 100cqh / 820px));
+  }
+
   .kiosk-stage {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 1180px;
     height: 820px;
-    transform-origin: center center;
+    transform-origin: top left;
     transform: scale(min(100cqw / 1180px, 100cqh / 820px));
   }
 }
 
 @container (max-height: 819px) {
+  .kiosk-fit {
+    position: relative;
+    width: calc(1180px * min(100cqw / 1180px, 100cqh / 820px));
+    height: calc(820px * min(100cqw / 1180px, 100cqh / 820px));
+  }
+
   .kiosk-stage {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 1180px;
     height: 820px;
-    transform-origin: center center;
+    transform-origin: top left;
     transform: scale(min(100cqw / 1180px, 100cqh / 820px));
+  }
+}
+
+.kiosk-rotate-notice {
+  display: none;
+}
+
+@media (orientation: portrait) and (max-width: 900px) {
+  .kiosk-rotate-notice {
+    position: fixed;
+    z-index: 50;
+    inset: 0;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding:
+      calc(1.5rem + env(safe-area-inset-top))
+      calc(1.5rem + env(safe-area-inset-right))
+      calc(1.5rem + env(safe-area-inset-bottom))
+      calc(1.5rem + env(safe-area-inset-left));
+    background: #0a0a0f;
+    color: rgb(255 255 255 / 0.92);
+  }
+
+  .kiosk-frame {
+    display: none;
+  }
+}
+
+.kiosk-rotate-card {
+  width: min(100%, 22rem);
+  text-align: center;
+}
+
+.kiosk-rotate-icon {
+  display: block;
+  width: 4.5rem;
+  height: 4.5rem;
+  margin: 0 auto 1.25rem;
+}
+
+.kiosk-rotate-title {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+}
+
+.kiosk-rotate-copy {
+  margin: 0.85rem 0 0;
+  font-size: 1.125rem;
+  line-height: 1.45;
+  color: rgb(255 255 255 / 0.66);
+}
+
+/*
+  A landscape phone is too short for a readable 1180×820 scale-to-fit.
+  Fill the screen with the existing layout instead of a postage-stamp wall.
+  Wider kiosk sizes still use the scaled stage above.
+*/
+@media (orientation: landscape) and (max-height: 520px) and (max-width: 1023px) {
+  .kiosk-frame > .kiosk-fit,
+  .kiosk-frame > .kiosk-fit > .kiosk-stage {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: 100%;
+    height: 100%;
+    transform: none;
+  }
+
+  .kiosk-stage header {
+    gap: 0.75rem;
+    padding: 0.35rem 0.75rem 0.15rem;
+  }
+
+  .kiosk-stage header .min-h-24 {
+    min-height: 2.25rem;
+  }
+
+  .kiosk-stage header .text-5xl {
+    font-size: 1.35rem;
+    line-height: 1.1;
+  }
+
+  .kiosk-stage header .text-lg {
+    margin-top: 0;
+    font-size: 0.75rem;
+    line-height: 1.2;
+  }
+
+  .kiosk-stage header .text-3xl {
+    font-size: 1.2rem;
+    line-height: 1.1;
+  }
+
+  .kiosk-stage header > :last-child {
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .kiosk-stage [aria-label="Day"] .touch-pan-y {
+    overflow-y: auto;
+    overscroll-behavior: contain;
   }
 }
