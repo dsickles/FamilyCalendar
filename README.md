@@ -4,6 +4,8 @@ An **ad-free and zero-subscription family kiosk**: a modular, touch-first, full-
 
 This is a wall appliance, not a general website and not a SaaS product. A public clone boots **demo mode** with sample events. A live install (Docker on a NAS, or optionally Vercel) loads private ICS calendars and local weather **behind the same PIN-gate**. After unlock, the wall is view-only until someone explicitly locks it. Idle time returns the calendar to the month grid. It does not bring back the PIN.
 
+**Public demo:** https://familycalendar-demo.vercel.app — empty environment, sample events, no PIN. A live family install (PIN and private calendars) is not linked in this README.
+
 ## Why it exists
 
 | Intent | Meaning |
@@ -47,6 +49,8 @@ The screen opens on a 4-week month grid. The header is the clock, current weathe
 ### Demo on your computer
 
 This is the easiest way to see the wall before you connect a real calendar. You run it on the computer in front of you, open it in a browser, and get sample events for a made-up household (Alex, Jordan, Family, and School). There is no PIN to type and no account to create. Nothing you do here touches a live family calendar.
+
+The same empty-env demo is already online at https://familycalendar-demo.vercel.app (sample events, no PIN).
 
 You will install two free tools, download this project, and start it. If you already have a file named `.env.local` in the folder and it contains a calendar link, set that file aside for now. With a calendar link present, the app expects your real calendars and a PIN instead of this demo.
 
@@ -182,7 +186,7 @@ When you need it later:
 
 ### Vercel
 
-Vercel hosts the website for you. You connect the project, and Vercel builds it and gives you a link that works from any network, including a phone away from home. You do not leave a computer running. Vercel has a free tier that is enough for a single family wall. The PIN screen is still required, so the link is not a public demo. Do not put that live link in this README.
+Vercel hosts the website for you. You connect the project, and Vercel builds it and gives you a link that works from any network, including a phone away from home. You do not leave a computer running. Vercel has a free tier that is enough for a single family wall. The PIN screen is still required on that live install, so it is separate from the public demo linked above. Do not put that live family link in this README.
 
 1. The project needs to live on GitHub. Vercel copies it from there. If you use GitHub, do not upload `.env.local`. Your PIN and calendar links are typed into Vercel in a later step instead.
 2. Go to [vercel.com](https://vercel.com) and create an account. Choose **Continue with GitHub** so Vercel can see your repositories. Approve that access when GitHub asks.
@@ -215,4 +219,4 @@ Next.js (App Router, standalone output), React 19, TypeScript, Tailwind CSS v4, 
 
 ## License
 
-Private family appliance source, published as a public portfolio repo. No live dashboard URL is linked from here on purpose.
+Private family appliance source, published as a public portfolio repo. The public demo (empty environment, sample events, no PIN) is https://familycalendar-demo.vercel.app. A live family install is not linked from here on purpose.
