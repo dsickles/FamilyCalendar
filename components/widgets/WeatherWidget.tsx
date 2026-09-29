@@ -10,6 +10,7 @@ import {
   IconMoonStars,
   IconSun,
 } from "@tabler/icons-react";
+import { calendarDateParts } from "@/lib/date-utils";
 import { useWeather } from "@/lib/hooks/useWeather";
 import type { WeatherData } from "@/lib/types/weather";
 import { describeWeatherCode } from "@/lib/wmo-codes";
@@ -59,6 +60,18 @@ function weekdayShort(ymd: string, timeZone: string): string {
     weekday: "short",
     timeZone,
   }).format(instant);
+}
+
+function zonedDayKey(date: Date, timeZone: string): string {
+  const { year, month, day } = calendarDateParts(date, timeZone);
+  return `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+}
+
+function forecastDayLabel(ymd: string, timeZone: string): string {
+  if (ymd === zonedDayKey(new Date(), timeZone)) {
+    return "Today";
+  }
+  return weekdayShort(ymd, timeZone);
 }
 
 function unitSuffix(unit: TemperatureUnit): string {
@@ -128,7 +141,7 @@ function CurrentConditions({
             return (
               <li key={day.date} className="flex flex-col items-center gap-0.5">
                 <span className="text-xs leading-none text-text-secondary">
-                  {weekdayShort(day.date, timezone)}
+                  {forecastDayLabel(day.date, timezone)}
                 </span>
                 <DayIcon size={16} stroke={1.5} className="text-text-secondary" aria-hidden />
                 <span className="text-xs leading-none text-text-secondary tabular-nums">

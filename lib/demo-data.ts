@@ -22,7 +22,7 @@ const CALENDARS = [
   {
     calendarId: "school",
     calendarLabel: "School",
-    calendarColor: "#8b5cf6",
+    calendarColor: "#eab308",
     calendarCategory: "external" as const,
   },
 ] as const;
