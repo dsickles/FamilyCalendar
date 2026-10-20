@@ -1,0 +1,58 @@
+# Constitution compliance gates (DAS-85): viewport, auth, uptime, bundle,
+# and secrets. Kept apart from ci.yml so lint/build changes do not collide.
+name: Compliance gates
+
+on:
+  pull_request:
+  push:
+    branches: [master]
+
+concurrency:
+  group: gates-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  gates:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      # Fake values only. The build bakes in whatever it sees, so the
+      # secret scan looks for these exact strings in .next/static.
+      DASHBOARD_PIN: "73914826"
+      GATE_TEST_PIN: "73914826"
+      CAL_TEST_URL: fixture:mock.ics
+      CAL_LEAKCHECK_URL: https://calendar.example.invalid/leak-check.ics
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Build with test PIN and feeds
+        run: npm run build
+
+      - name: Bundle and secret gate
+        run: npm run check:secrets
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Viewport, auth, and uptime gates
+        # playwright.config.ts gives each server its own PIN and feeds.
+        run: npm run test:e2e
+
+      - name: Upload Playwright report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7

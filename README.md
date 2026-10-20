@@ -206,6 +206,22 @@ Vercel hosts the website for you. You connect the project, and Vercel builds it 
 11. Optional extra lock: **Project → Settings → Deployment Protection**. That asks someone to sign in to Vercel before the wall even loads. Family members who do not have a Vercel account would be stuck, so leave this off unless you want that second door. It does not replace `DASHBOARD_PIN`. The PIN screen is still what your household uses.
 12. On an iPad away from home, open the Vercel link in Safari, unlock, then Add to Home Screen and Guided Access the same way as in the Docker steps. Walking away still returns the calendar to the 4-week view. It does not ask for the PIN again.
 
+## Compliance gates
+
+`.github/workflows/gates.yml` runs the constitution gates on every pull request.
+
+- **Bundle and secrets**: `npm run check:secrets` scans `.next/static` for the PIN, every `CAL_*_URL`, and `icsUrl`, and checks that `.env.local` is gitignored and `.env.example` leaves the PIN and feed URLs empty.
+- **Viewport, auth, and uptime**: `npm run test:e2e` starts two servers from the same build, one in demo mode and one with a test PIN and the `fixture:mock.ics` feed. It checks month, week, and day at 1180×820, 1366×1024, and 1920×1080, the auth redirects and 401s, and `/api/health`.
+
+To run them locally:
+
+```bash
+DASHBOARD_PIN=73914826 CAL_TEST_URL=fixture:mock.ics npm run build
+DASHBOARD_PIN=73914826 CAL_TEST_URL=fixture:mock.ics npm run check:secrets
+npx playwright install chromium
+npm run test:e2e
+```
+
 ## Stack
 
 Next.js (App Router, standalone output), React 19, TypeScript, Tailwind CSS v4, Framer Motion, Lucide, `node-ical`, SWR, Open-Meteo (no API key).
