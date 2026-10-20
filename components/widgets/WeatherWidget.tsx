@@ -10,6 +10,7 @@ import {
   IconMoonStars,
   IconSun,
 } from "@tabler/icons-react";
+import { createElement } from "react";
 import { calendarDateParts } from "@/lib/date-utils";
 import { useWeather } from "@/lib/hooks/useWeather";
 import type { WeatherData } from "@/lib/types/weather";
@@ -46,6 +47,23 @@ function resolveIcon(name: string, isDay: boolean): WeatherIcon {
         ? "CloudMoon"
         : name;
   return ICONS[swapped] ?? IconCloud;
+}
+
+function WeatherGlyph({
+  name,
+  isDay,
+  size,
+}: {
+  name: string;
+  isDay: boolean;
+  size: number;
+}) {
+  return createElement(resolveIcon(name, isDay), {
+    size,
+    stroke: 1.5,
+    className: "text-text-secondary",
+    "aria-hidden": true,
+  });
 }
 
 function weekdayShort(ymd: string, timeZone: string): string {
@@ -118,7 +136,6 @@ function CurrentConditions({
   locationName: string;
 }) {
   const described = describeWeatherCode(weather.current.weatherCode);
-  const CurrentIcon = resolveIcon(described.icon, weather.current.isDay);
   const days = weather.daily.slice(0, 3);
   const suffix = unitSuffix(temperatureUnit);
 
@@ -132,18 +149,17 @@ function CurrentConditions({
         {Math.round(weather.current.temperature)}
         {suffix}
       </p>
-      <CurrentIcon size={22} stroke={1.5} className="text-text-secondary" aria-hidden />
+      <WeatherGlyph name={described.icon} isDay={weather.current.isDay} size={22} />
       {days.length > 0 ? (
         <ul className="flex items-center gap-4 border-l border-border pl-5">
           {days.map((day) => {
             const dayInfo = describeWeatherCode(day.weatherCode);
-            const DayIcon = resolveIcon(dayInfo.icon, true);
             return (
               <li key={day.date} className="flex flex-col items-center gap-0.5">
                 <span className="text-xs leading-none text-text-secondary">
                   {forecastDayLabel(day.date, timezone)}
                 </span>
-                <DayIcon size={16} stroke={1.5} className="text-text-secondary" aria-hidden />
+                <WeatherGlyph name={dayInfo.icon} isDay size={16} />
                 <span className="text-xs leading-none text-text-secondary tabular-nums">
                   {Math.round(day.temperatureMax)}°/{Math.round(day.temperatureMin)}°
                 </span>
