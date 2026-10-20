@@ -210,6 +210,17 @@ Vercel hosts the website for you. You connect the project, and Vercel builds it 
 
 Next.js (App Router, standalone output), React 19, TypeScript, Tailwind CSS v4, Framer Motion, Lucide, `node-ical`, SWR, Open-Meteo (no API key).
 
+## Checks
+
+GitHub Actions runs these on every pull request and on pushes to `master`, with an empty environment (demo mode, no secrets). Run them locally before you push:
+
+```bash
+npm run lint
+npm run typecheck   # generates Next route types, then runs tsc
+npm test            # Vitest unit tests for lib/ (no network)
+npm run build
+```
+
 ## Spec Kit
 
 | Doc | Path |
