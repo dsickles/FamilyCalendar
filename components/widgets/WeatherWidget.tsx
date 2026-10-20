@@ -58,6 +58,9 @@ function WeatherGlyph({
   isDay: boolean;
   size: number;
 }) {
+  // resolveIcon returns one of the module-level icon components above, so
+  // the element type is stable across renders; createElement keeps the
+  // react-hooks/static-components rule from reading it as a new component.
   return createElement(resolveIcon(name, isDay), {
     size,
     stroke: 1.5,
