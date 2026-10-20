@@ -1,7 +1,7 @@
 # Family Wall Dashboard — Project Context
 
 **Status**: Approved 2026-09-21. Progress updated 2026-09-25.
-**Constitution**: `.spec/constitution.md` (canonical Spec Kit copy: `.specify/memory/constitution.md` v1.1.0, invariants unchanged)
+**Constitution**: `.spec/constitution.md` (canonical Spec Kit copy: `.specify/memory/constitution.md` v1.2.0)
 **Scope of this document**: Vision, hardware, deployment architecture, locked tech stack, and implementation progress.
 
 ## Vision
