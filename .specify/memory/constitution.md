@@ -1,7 +1,7 @@
 <!--
 Sync Impact Report
 - Version change: 1.1.0 → 1.2.0 (MINOR: public demo deployment allowed; phone landscape defined as best-effort)
-- Modified principles: I Viewport (phone landscape/portrait is best-effort, outside the gate); II Security (demo mode keyed on CAL_*_URL alone)
+- Modified principles: I Viewport (phone landscape and portrait, incl. iPad portrait rotate notice, are best-effort, outside the gate); II Security (demo mode keyed on CAL_*_URL alone)
 - Modified sections: Dual-Path Deployment Constraints (live vs public demo Vercel deployments; portfolio MAY link the demo); Compliance Gates (viewport gate names all three gated sizes, excludes phones)
 - Added sections: none
 - Removed sections: none
@@ -36,9 +36,10 @@ animation MUST compose inside that rectangle with **zero overscroll**.
 - The default ambient view MUST fill the viewport with no page-level
   scrollbars. Contained vertical scroll is permitted only inside Week view's
   time grid, and MUST use `overscroll-behavior: contain`.
-- **Phone landscape is best-effort, not a compliance target.** A short
-  landscape phone viewport MAY reuse the kiosk layout at screen size, and a
-  narrow portrait viewport MAY show a rotate notice instead of the calendar.
+- **Phones and portrait are best-effort, not compliance targets.** A short
+  landscape phone viewport MAY reuse the kiosk layout at screen size. Any
+  portrait viewport up to 900 CSS px wide, including iPad portrait, MAY
+  show a rotate notice instead of the calendar.
   Phone layout defects are bugs to fix, not constitution violations, and
   MUST NOT block a merge. Phone-specific CSS MUST NOT change layout at the
   three gated sizes above.

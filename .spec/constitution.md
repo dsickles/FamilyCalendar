@@ -30,9 +30,10 @@ animation MUST compose inside that rectangle with **zero overscroll**.
 - The default ambient view MUST fill the viewport with no page-level
   scrollbars. Contained vertical scroll is permitted only inside Week view's
   time grid, and MUST use `overscroll-behavior: contain`.
-- **Phone landscape is best-effort, not a compliance target.** A short
-  landscape phone viewport MAY reuse the kiosk layout at screen size, and a
-  narrow portrait viewport MAY show a rotate notice instead of the calendar.
+- **Phones and portrait are best-effort, not compliance targets.** A short
+  landscape phone viewport MAY reuse the kiosk layout at screen size. Any
+  portrait viewport up to 900 CSS px wide, including iPad portrait, MAY
+  show a rotate notice instead of the calendar.
   Phone layout defects are bugs to fix, not constitution violations, and
   MUST NOT block a merge. Phone-specific CSS MUST NOT change layout at the
   three gated sizes above.
