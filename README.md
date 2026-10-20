@@ -208,7 +208,7 @@ Vercel hosts the website for you. You connect the project, and Vercel builds it 
 
 ## Compliance gates
 
-`.github/workflows/gates.yml` runs the constitution gates on every pull request.
+`.github/workflows/gates.yml` automates most of the constitution compliance gates on every pull request. Cache expiry, idle reset, leak checks, and overscroll bounce are still manual (DAS-90).
 
 - **Bundle and secrets**: `npm run check:secrets` scans `.next/static` for the PIN, every `CAL_*_URL`, and `icsUrl`, and checks that `.env.local` is gitignored and `.env.example` leaves the PIN and feed URLs empty.
 - **Viewport, auth, and uptime**: `npm run test:e2e` starts two servers from the same build, one in demo mode and one with a test PIN and the `fixture:mock.ics` feed. It checks month, week, and day at 1180×820, 1366×1024, and 1920×1080, the auth redirects and 401s, and `/api/health`.
@@ -221,6 +221,8 @@ DASHBOARD_PIN=73914826 CAL_TEST_URL=fixture:mock.ics npm run check:secrets
 npx playwright install chromium
 npm run test:e2e
 ```
+
+If you set `WEATHER_LAT` or `WEATHER_LON` before the scan, they are searched for too. A short coordinate can match an unrelated number in minified code, so check any hit by hand before treating it as a leak.
 
 ## Stack
 

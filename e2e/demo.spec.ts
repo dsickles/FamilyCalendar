@@ -8,6 +8,8 @@ test("health reports demo mode", async ({ request }) => {
   expect(await response.json()).toMatchObject({ status: "ok", mode: "demo" });
 });
 
+// /api/weather is left out here: it calls Open-Meteo, and CI should not
+// depend on that network. The auth spec covers its 401.
 test("dashboard and APIs are open without a session", async ({ request }) => {
   const home = await request.get("/", { maxRedirects: 0 });
   expect(home.status()).toBe(200);

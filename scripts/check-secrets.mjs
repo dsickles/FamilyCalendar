@@ -82,6 +82,8 @@ function checkGitignore() {
   }
 }
 
+// WEATHER_LAT/LON are not checked here: the documented defaults are the
+// public Scarsdale location that lib/config.ts also falls back to.
 function checkEnvExample() {
   const file = path.join(root, ".env.example");
   if (!existsSync(file)) {
