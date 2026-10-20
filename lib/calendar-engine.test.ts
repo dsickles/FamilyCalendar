@@ -111,6 +111,19 @@ describe("fetchAndParseCalendars with mock.ics", () => {
     expect(titled(events, "Team standup")).toHaveLength(0);
   });
 
+  it("drops occurrences that start before the window", async () => {
+    const lateStart = zonedDateTime(2026, 9, 22, 0, 0, 0, TZ);
+    const { events } = await fetchAndParseCalendars([source()], lateStart, windowEnd);
+    for (const event of events) {
+      expect(Date.parse(event.startTime)).toBeGreaterThanOrEqual(lateStart.getTime());
+    }
+    expect(titled(events, "Team standup")).toHaveLength(0);
+    expect(titled(events, "Design review")).toHaveLength(1);
+    expect(titled(events, "Weekly planning").map((e) => e.startTime)).not.toContain(
+      "2026-09-14T14:00:00.000Z",
+    );
+  });
+
   it("returns events sorted by start time with no feed URL on them", async () => {
     const { events } = await fetchAndParseCalendars([source()], windowStart, windowEnd);
     const starts = events.map((event) => event.startTime);
@@ -142,6 +155,38 @@ describe("feed isolation", () => {
       { calendarId: "dead", calendarLabel: "Dead", reason: "network" },
     ]);
   });
+
+  it("times out a hung feed without holding back the healthy one", async () => {
+    // The hung feed's fetch settles only when the signal it was handed aborts,
+    // so this test hangs (and fails) if readFeedText stops passing a timeout.
+    const controller = new AbortController();
+    const timeoutSpy = vi
+      .spyOn(AbortSignal, "timeout")
+      .mockReturnValue(controller.signal);
+    vi.spyOn(globalThis, "fetch").mockImplementation(
+      (_input, init) =>
+        new Promise<Response>((_resolve, reject) => {
+          const signal = init!.signal!;
+          signal.addEventListener("abort", () => reject(signal.reason));
+        }),
+    );
+    const pending = fetchAndParseCalendars(
+      [
+        source(),
+        source({ id: "hung", label: "Hung", icsUrl: "https://feeds.example.test/hung.ics" }),
+      ],
+      windowStart,
+      windowEnd,
+    );
+    await vi.waitFor(() => expect(timeoutSpy).toHaveBeenCalledWith(8_000));
+    controller.abort(new DOMException("The operation timed out.", "TimeoutError"));
+    const { events, errors } = await pending;
+    expect(titled(events, "Team standup")).toHaveLength(1);
+    expect(events.every((event) => event.calendarId === "mock")).toBe(true);
+    expect(errors).toEqual([
+      { calendarId: "hung", calendarLabel: "Hung", reason: "timeout" },
+    ]);
+  }, 2_000);
 
   it("reports a timeout when a feed aborts", async () => {
     vi.spyOn(globalThis, "fetch").mockRejectedValue(

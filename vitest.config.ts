@@ -8,6 +8,7 @@ export default defineConfig({
   test: {
     environment: "node",
     include: ["lib/**/*.test.ts"],
+    setupFiles: ["lib/test-setup.ts"],
     env: { TZ: "UTC" },
   },
 });
