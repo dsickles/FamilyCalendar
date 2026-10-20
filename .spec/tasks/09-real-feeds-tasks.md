@@ -3,7 +3,7 @@
 **Input**: `.spec/specifications/09-real-feeds.md`
 **Constitution**: `.spec/constitution.md` (v1.1.0)
 **Project context**: `.spec/project.md`
-**Source**: `.spec/project.md` Phase 9 (real feeds, device test, README). Phases 1, 1.5, 2, 3, 4, 5, 6, 7, and 8 are already implemented (through T055). Ignore the stale "Phase 3 deferred" through "Phase 9 deferred" rows in `.spec/project.md`.
+**Source**: `.spec/project.md` Phase 9 (real feeds, device test, README). Phases 1, 1.5, 2, 3, 4, 5, 6, 7, and 8 are already implemented (through T055).
 **Status**: Review complete 2026-09-25. Implemented 2026-09-25 (T056–T058). Do not start a Phase 10.
 
 **Tests**: Not requested as a separate TDD suite. The phase has a
