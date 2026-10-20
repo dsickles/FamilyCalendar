@@ -1,15 +1,18 @@
 "use client";
 
 import {
-  IconCloud,
-  IconCloudBolt,
-  IconCloudFog,
-  IconCloudRain,
-  IconCloudSnow,
-  IconMoon,
-  IconMoonStars,
-  IconSun,
-} from "@tabler/icons-react";
+  Cloud,
+  CloudDrizzle,
+  CloudFog,
+  CloudLightning,
+  CloudMoon,
+  CloudRain,
+  CloudSnow,
+  CloudSun,
+  Moon,
+  Sun,
+  type LucideIcon,
+} from "lucide-react";
 import { calendarDateParts } from "@/lib/date-utils";
 import { useWeather } from "@/lib/hooks/useWeather";
 import type { WeatherData } from "@/lib/types/weather";
@@ -23,19 +26,19 @@ type WeatherWidgetProps = {
   locationName: string;
 };
 
-type WeatherIcon = typeof IconCloud;
+type WeatherIcon = LucideIcon;
 
 const ICONS: Record<string, WeatherIcon> = {
-  Sun: IconSun,
-  Moon: IconMoon,
-  CloudSun: IconCloud,
-  CloudMoon: IconMoonStars,
-  Cloud: IconCloud,
-  CloudFog: IconCloudFog,
-  CloudDrizzle: IconCloudRain,
-  CloudRain: IconCloudRain,
-  CloudSnow: IconCloudSnow,
-  CloudLightning: IconCloudBolt,
+  Sun,
+  Moon,
+  CloudSun,
+  CloudMoon,
+  Cloud,
+  CloudFog,
+  CloudDrizzle,
+  CloudRain,
+  CloudSnow,
+  CloudLightning,
 };
 
 function resolveIcon(name: string, isDay: boolean): WeatherIcon {
@@ -45,7 +48,7 @@ function resolveIcon(name: string, isDay: boolean): WeatherIcon {
       : !isDay && name === "CloudSun"
         ? "CloudMoon"
         : name;
-  return ICONS[swapped] ?? IconCloud;
+  return ICONS[swapped] ?? Cloud;
 }
 
 function weekdayShort(ymd: string, timeZone: string): string {
@@ -132,7 +135,7 @@ function CurrentConditions({
         {Math.round(weather.current.temperature)}
         {suffix}
       </p>
-      <CurrentIcon size={22} stroke={1.5} className="text-text-secondary" aria-hidden />
+      <CurrentIcon size={22} strokeWidth={1.5} className="text-text-secondary" aria-hidden />
       {days.length > 0 ? (
         <ul className="flex items-center gap-4 border-l border-border pl-5">
           {days.map((day) => {
@@ -143,7 +146,7 @@ function CurrentConditions({
                 <span className="text-xs leading-none text-text-secondary">
                   {forecastDayLabel(day.date, timezone)}
                 </span>
-                <DayIcon size={16} stroke={1.5} className="text-text-secondary" aria-hidden />
+                <DayIcon size={16} strokeWidth={1.5} className="text-text-secondary" aria-hidden />
                 <span className="text-xs leading-none text-text-secondary tabular-nums">
                   {Math.round(day.temperatureMax)}°/{Math.round(day.temperatureMin)}°
                 </span>
