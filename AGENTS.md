@@ -4,13 +4,7 @@ This repo is Spec Kit + Next.js 16. Specs in `.spec/` and `.specify/` are agent-
 
 ## Spec Kit integration
 
-This project was initialized for Cursor (`.cursor/skills/speckit-*`). To use Spec Kit in Claude Code:
-
-```bash
-specify integration install claude
-```
-
-That adds `.claude/skills/` without rewriting the app. Then use `/speckit-specify`, `/speckit-plan`, `/speckit-tasks`, `/speckit-implement`, and the other speckit skills.
+This project was initialized for Cursor (`.cursor/skills/speckit-*`). The Claude Code integration is also installed (`.claude/skills/speckit-*`, via `specify integration install claude`), so `/speckit-specify`, `/speckit-plan`, `/speckit-tasks`, `/speckit-implement`, and the other speckit skills work in Claude Code. Cursor stays the default integration.
 
 ## Phase review gates
 

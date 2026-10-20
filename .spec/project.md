@@ -134,18 +134,18 @@ not a different auth model.
 ## Tech Stack (Locked)
 
 Resolved in the Master Plan. Do not substitute without a constitution
-amendment plus a plan revision.
+amendment plus a plan revision. Pins match `package.json` as of 2026-10-20.
 
 | Layer | Choice | Pin |
 |-------|--------|-----|
-| Framework | Next.js App Router | `next ^15.0.0` |
-| UI | React 19 | `react ^19.0.0`, `react-dom ^19.0.0` |
-| Language | TypeScript | `typescript ^5.6.0` |
-| Styling | Tailwind CSS v4 (CSS-first, Oxide) | `tailwindcss ^4.3.0`, `@tailwindcss/postcss ^4.3.0` |
-| Motion | Framer Motion | `framer-motion ^12.0.0` |
-| Icons | Lucide React | `lucide-react ^0.460.0` |
-| Calendar parse | node-ical (RRULE expansion) | `node-ical ^0.20.0` |
-| Client data | SWR | `swr ^2.3.0` |
+| Framework | Next.js App Router | `next 16.3.5`, `eslint-config-next 16.3.5` |
+| UI | React 19 | `react 19.2.8`, `react-dom 19.2.8` |
+| Language | TypeScript | `typescript ^5` |
+| Styling | Tailwind CSS v4 (CSS-first, Oxide) | `tailwindcss ^4`, `@tailwindcss/postcss ^4` |
+| Motion | Framer Motion | `framer-motion ^13.4.0` |
+| Icons | Lucide React (UI controls and weather) | `lucide-react ^1.47.0` |
+| Calendar parse | node-ical (RRULE expansion) | `node-ical ^0.27.2` |
+| Client data | SWR | `swr ^2.5.1` |
 | Weather | Open-Meteo (no API key) | HTTPS forecast API |
 | Runtime (kiosk) | Node 20 Alpine in Docker | NAS with Docker |
 | Runtime (optional) | Vercel | Hobby-compatible |
@@ -200,7 +200,7 @@ Non-secret defaults (also env, documented in `.env.example`):
 
 ## Implementation Phasing (context only)
 
-Planned slices are 1 through 9. There is no Phase 10. Phases 1 through 9 are review complete.
+Planned slices are 1 through 9. There is no Phase 10. Phases 1 through 9 are review complete. Phase 9.1 is a backfill of small changes merged after Phase 9 review.
 
 | Phase | Intent | Status |
 |-------|--------|--------|
@@ -214,8 +214,9 @@ Planned slices are 1 through 9. There is no Phase 10. Phases 1 through 9 are rev
 | 7 | Filter bar (one chip per calendar) | Review complete 2026-09-25 (implemented 2026-09-22, T044–T050) |
 | 8 | Calendar idle reset (back to month view, not PIN) and kiosk polish | Review complete 2026-09-25 (implemented 2026-09-22, T051–T055) |
 | 9 | Real feeds, device test, README | Review complete 2026-09-25 (implemented 2026-09-25, T056–T058) |
+| 9.1 | Post-launch polish: public demo link, phone kiosk shell, Today forecast label, School yellow | Backfilled 2026-10-20 (implemented 2026-09-26 through 2026-09-29 in PRs #1–#3, T059–T063) |
 
-The shipped wall is the Phase 9 tree: demo mode with no `CAL_*_URL`, live ICS behind the same PIN-gate, header clock and weather, calendar filter chips, month / week / day, and idle return to the month grid. `README.md` matches that wall. Do not start a Phase 10.
+The shipped wall is the Phase 9 tree plus the Phase 9.1 polish: demo mode with no `CAL_*_URL`, live ICS behind the same PIN-gate, header clock and weather, calendar filter chips, month / week / day, and idle return to the month grid. `README.md` matches that wall. Do not start a Phase 10.
 
 ## Related Spec Kit Artifacts
 
@@ -242,3 +243,5 @@ The shipped wall is the Phase 9 tree: demo mode with no `CAL_*_URL`, live ICS be
 | Phase 8 tasks | `.spec/tasks/08-idle-tasks.md` |
 | Phase 9 specification | `.spec/specifications/09-real-feeds.md` |
 | Phase 9 tasks | `.spec/tasks/09-real-feeds-tasks.md` |
+| Phase 9.1 specification | `.spec/specifications/09.1-post-launch-polish.md` |
+| Phase 9.1 tasks | `.spec/tasks/09.1-post-launch-tasks.md` |
