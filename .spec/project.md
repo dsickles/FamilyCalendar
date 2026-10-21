@@ -143,7 +143,7 @@ amendment plus a plan revision. Pins match `package.json` as of 2026-10-20.
 | Language | TypeScript | `typescript ^5` |
 | Styling | Tailwind CSS v4 (CSS-first, Oxide) | `tailwindcss ^4`, `@tailwindcss/postcss ^4` |
 | Motion | Framer Motion | `framer-motion ^13.4.0` |
-| Icons | Lucide React (UI controls), Tabler Icons (weather) | `lucide-react ^1.47.0`, `@tabler/icons-react ^3.48.0` |
+| Icons | Lucide React (UI controls and weather) | `lucide-react ^1.47.0` |
 | Calendar parse | node-ical (RRULE expansion) | `node-ical ^0.27.2` |
 | Client data | SWR | `swr ^2.5.1` |
 | Weather | Open-Meteo (no API key) | HTTPS forecast API |
