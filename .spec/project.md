@@ -1,7 +1,7 @@
 # Family Wall Dashboard — Project Context
 
 **Status**: Approved 2026-09-21. Progress updated 2026-09-25.
-**Constitution**: `.spec/constitution.md` (canonical Spec Kit copy: `.specify/memory/constitution.md` v1.1.0, invariants unchanged)
+**Constitution**: `.spec/constitution.md` (canonical Spec Kit copy: `.specify/memory/constitution.md` v1.2.0)
 **Scope of this document**: Vision, hardware, deployment architecture, locked tech stack, and implementation progress.
 
 ## Vision
@@ -130,6 +130,12 @@ not a different auth model.
   layer; it MUST NOT replace the PIN-gate
 - Hobby-plan Vercel Auth restricts the URL to the operator's Vercel
   account; family members without Vercel accounts use the PIN-gate
+
+Path B is the live install. The public demo deployment
+(`familycalendar-demo.vercel.app`) is a separate Vercel project with no
+`CAL_*_URL` and no PIN; constitution v1.2.0 (Dual-Path Deployment
+Constraints) governs it, and it MUST NOT share a project or environment
+with Path B.
 
 ## Tech Stack (Locked)
 

@@ -1,9 +1,9 @@
 # Family Wall Dashboard Constitution
 
-> Canonical Spec Kit copy: `.specify/memory/constitution.md` (v1.1.0).
+> Canonical Spec Kit copy: `.specify/memory/constitution.md` (v1.2.0).
 > This file is the reviewable extract of the same ratification.
 >
-> **Status**: Approved 2026-09-21. Invariants unchanged (v1.1.0). Implementation progress through Phase 9 is in `.spec/project.md`.
+> **Status**: v1.1.0 approved 2026-09-21. v1.2.0 amended 2026-10-20 (public demo deployment, phone best-effort); pending owner approval. Implementation progress through Phase 9 is in `.spec/project.md`.
 
 ## Core Principles
 
@@ -30,6 +30,13 @@ animation MUST compose inside that rectangle with **zero overscroll**.
 - The default ambient view MUST fill the viewport with no page-level
   scrollbars. Contained vertical scroll is permitted only inside Week view's
   time grid, and MUST use `overscroll-behavior: contain`.
+- **Phones and portrait are best-effort, not compliance targets.** A short
+  landscape phone viewport MAY reuse the kiosk layout at screen size. Any
+  portrait viewport up to 900 CSS px wide, including iPad portrait, MAY
+  show a rotate notice instead of the calendar.
+  Phone layout defects are bugs to fix, not constitution violations, and
+  MUST NOT block a merge. Phone-specific CSS MUST NOT change layout at the
+  three gated sizes above.
 
 **Rationale**: Guided Access kiosk mode has no browser chrome and no user
 escape hatch. Overscroll, zoom, or overflow makes the wall display look
@@ -69,6 +76,8 @@ private family data. Those two facts MUST never mix.
 - **Demo mode** (no `CAL_*_URL` values configured) MUST skip the PIN-gate
   and render built-in sample data so a public clone is useful without
   secrets. Demo mode MUST NOT be active on a deployment that has real feeds.
+  Demo mode is decided by the absence of `CAL_*_URL` alone; a
+  `DASHBOARD_PIN` with no feeds still serves demo data.
 
 **Rationale**: A leaked ICS URL or PIN in a client bundle is a permanent
 privacy incident. Defense in depth (gitignore + env-only secrets +
@@ -111,18 +120,25 @@ display until someone with the Guided Access PIN intervenes.
 ## Dual-Path Deployment Constraints
 
 Primary runtime is Docker on a NAS (LAN-only kiosk). Optional runtime
-is a PIN-protected Vercel deployment. Both paths MUST obey the same
-constitution.
+is a PIN-protected Vercel deployment. A separate public demo deployment is
+also permitted (see below). All paths MUST obey the same constitution.
 
 - The NAS MUST NOT require public port forwarding. The iPad reaches the NAS
   on the local network only.
-- Vercel MUST set `CAL_*` and `DASHBOARD_PIN` as platform environment
-  variables. PIN-gate is the application control. Vercel Deployment
-  Protection MAY be enabled as a second layer; it MUST NOT replace the
-  PIN-gate.
+- A **live** Vercel deployment (one serving family feeds) MUST set `CAL_*`
+  and `DASHBOARD_PIN` as platform environment variables. PIN-gate is the
+  application control. Vercel Deployment Protection MAY be enabled as a
+  second layer; it MUST NOT replace the PIN-gate.
+- A **public demo** deployment (currently
+  `familycalendar-demo.vercel.app`) MAY run with no `CAL_*_URL` and no
+  `DASHBOARD_PIN`, and therefore serves only built-in sample data in demo
+  mode. It MUST be a separate Vercel project from any live deployment, with
+  its own environment variables, and MUST NEVER share a deployment, project,
+  domain, or environment with real feeds. Adding any `CAL_*_URL` to the
+  demo project is a constitution violation.
 - Portfolio surfaces MUST link the public GitHub repo and demo screenshots
-  or recordings. They MUST NOT deep-link a live private dashboard as if it
-  were a public demo.
+  or recordings, and MAY link the public demo deployment. They MUST NOT
+  deep-link a live private dashboard as if it were a public demo.
 - Dockerfile MUST be multi-stage and production-oriented (builder + runner).
   Compose MUST pass `env_file: .env.local` and MUST NOT bake secrets into
   the image.
@@ -131,8 +147,10 @@ constitution.
 
 Every feature spec, plan, and PR MUST pass these checks before merge:
 
-1. **Viewport gate**: Emulate 1180×820 landscape. Confirm no document
-   scroll, no overscroll bounce, no overflow, and all tap targets ≥ 44×44pt.
+1. **Viewport gate**: Emulate 1180×820 landscape, then confirm no pixel
+   overflow at 1366×1024 and 1920×1080. Confirm no document scroll, no
+   overscroll bounce, no overflow, and all tap targets ≥ 44×44pt. Phone
+   viewports are not part of this gate (see Principle I).
 2. **Bundle gate**: Client bundles contain no PIN, no ICS URLs, no
    `DASHBOARD_PIN`, and no `.env.local` values. `icsUrl` MUST NOT appear in
    any client-consumed type.
@@ -167,4 +185,4 @@ wins and the task MUST be rewritten.
   and later-phase UX are specified elsewhere and MUST still honor these
   invariants.
 
-**Version**: 1.1.0 | **Ratified**: 2026-09-21 | **Last Amended**: 2026-09-21
+**Version**: 1.2.0 | **Ratified**: 2026-09-21 | **Last Amended**: 2026-10-20
