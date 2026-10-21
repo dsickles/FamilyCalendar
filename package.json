@@ -7,6 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "test:e2e": "playwright test",
+    "check:secrets": "node scripts/check-secrets.mjs",
     "typecheck": "next typegen && tsc --noEmit",
     "test": "vitest run"
   },
@@ -20,6 +22,7 @@
     "swr": "^2.5.1"
   },
   "devDependencies": {
+    "@playwright/test": "^1.64.1",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20.19.43",
     "@types/react": "^19",

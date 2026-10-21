@@ -16,14 +16,14 @@ Category chips (`person | shared | utility | external`) are not the filter. `cal
 
 The header is one row and it is already full at 1180×820: clock on the left, current weather and the 3-day forecast on that same row, `LockControl` at the far right (omitted in demo mode). View controls stay out of that row.
 
-The chips are a single 28px row in the main column, directly under that header and directly above the current view (4-week, week, or day). The row is labeled **Filters:** and then one entry per calendar: a filled dot in `calendarColor` and the `calendarLabel`, in the same pattern as a color legend. It does not wrap, does not scroll, and does not grow past 28px. The view under it keeps `min-h-0 flex-1 overflow-hidden` and absorbs that 28px. The document does not scroll. The same row stays mounted on week view and day view.
+The chips are a single row in the main column, directly under that header and directly above the current view (4-week, week, or day). The row is labeled **Filters:** and then one entry per calendar: a filled dot in `calendarColor` and the `calendarLabel`, in the same pattern as a color legend. It does not wrap, does not scroll, and is 44px tall so each chip meets the 44×44 hit target (DAS-85). It looks like a 28px line because the header and the view give up their 8px padding next to it, so the calendar keeps the same height. The view under it keeps `min-h-0 flex-1 overflow-hidden`. The document does not scroll. The same row stays mounted on week view and day view.
 
 ```text
 header (unchanged, one row)
   clock          current weather + 3-day forecast          lock
 
 main
-  Filters:  (Alex) (Jordan) (Family) (School)     28px, dot + name, one line
+  Filters:  (Alex) (Jordan) (Family) (School)     44px, dot + name, one line
   4-week grid  |  week planner  |  day list       fills whatever remains
 ```
 
@@ -31,8 +31,8 @@ The names and colors come from the loaded events. Demo mode is Alex `#6366f1`, J
 
 | Viewport | What the chip row does |
 |----------|------------------------|
-| **1180×820** | One 28px line under the header. Primary check. |
-| **1366×1024** and **1920×1080** | The same 28px line. Extra width and height go into the calendar. The stage still fills the viewport. |
+| **1180×820** | One 44px line under the header. Primary check. |
+| **1366×1024** and **1920×1080** | The same 44px line. Extra width and height go into the calendar. The stage still fills the viewport. |
 | Smaller than 1180×820 on either edge | The existing 1180×820 stage scale includes the chip row. No new scroll container. |
 
 The week time grid remains the only element that uses `overflow: auto` or `overflow: scroll`. The chip row uses `overflow: hidden`.
@@ -55,13 +55,13 @@ A glance from about 3 feet still sees the same header. Under it, a short row rea
 
 **Why this priority**: The header cannot take the chips. The row has to name the same calendars the event colors already use, and it has to stay short enough that the calendar still fills the stage.
 
-**Independent Test**: In demo mode at 1180×820, `/` shows "Filters:" then Alex, Jordan, Family, and School, each with a dot in that calendar's color (`#6366f1`, `#ec4899`, `#10b981`, `#8b5cf6`). The row is 28px tall. Open a day, then that week's view. The same row is still there. `document.documentElement` does not gain a scrollbar.
+**Independent Test**: In demo mode at 1180×820, `/` shows "Filters:" then Alex, Jordan, Family, and School, each with a dot in that calendar's color (`#6366f1`, `#ec4899`, `#10b981`, `#8b5cf6`). The row is 44px tall and reads as one line. Open a day, then that week's view. The same row is still there. `document.documentElement` does not gain a scrollbar.
 
 **Acceptance Scenarios**:
 
-1. **Given** `/` in demo mode, **When** the 4-week grid is showing, **Then** the header is still one row. Under it, a group named "Filters" shows the text "Filters:" and one button per calendar in first-seen order: Alex, Jordan, Family, School. Each button shows a filled dot painted with that event's `calendarColor` and the `calendarLabel`. The row's border box is 28px tall, `flex-shrink: 0`, `overflow: hidden`, and the buttons stay on one line.
+1. **Given** `/` in demo mode, **When** the 4-week grid is showing, **Then** the header is still one row. Under it, a group named "Filters" shows the text "Filters:" and one button per calendar in first-seen order: Alex, Jordan, Family, School. Each button shows a filled dot painted with that event's `calendarColor` and the `calendarLabel`. The row's border box is 44px tall, each button is 44px tall, `flex-shrink: 0`, `overflow: hidden`, and the buttons stay on one line.
 2. **Given** that row, **When** a day is opened and then its week, **Then** the same calendar buttons stay mounted above day view and above week view. Day view still shows Week, the date with a chevron on each side, and "4 weeks". Week view still shows an empty left slot, chevrons around the range, and "4 weeks".
-3. **Given** any of the three views, **When** the viewport is 1180×820, 1366×1024, or 1920×1080, **Then** the stage fills that viewport, the filter row stays one 28px line, and the document `scrollHeight` does not exceed the layout viewport.
+3. **Given** any of the three views, **When** the viewport is 1180×820, 1366×1024, or 1920×1080, **Then** the stage fills that viewport, the filter row stays one 44px line, and the document `scrollHeight` does not exceed the layout viewport.
 
 ---
 
@@ -94,7 +94,7 @@ Each chip is one `calendarId`. An empty `activeFilters` shows every event, and e
 - **Unavailable vs filtered-empty**: "Calendar unavailable" only when the fetch errors and `events` is missing. `events: []`, and a filter that matches nothing, keep the view chrome and use the existing empty presentation ("No events" on day view; no chips on the grid).
 - **Idle**: Do not write a timestamp into `lastInteractionAt`. Do not read `IDLE_TIMEOUT_MS` or `idleTimeoutMs`. Do not return to month view on a timer. Phase 8 owns that.
 - **Secrets**: The client does not import `lib/config.ts` (that module carries `icsUrl`). Chip identity is `calendarId`, `calendarLabel`, and `calendarColor` from the event payload. No PIN, ICS URL, latitude, or longitude is added to props or bundles. `icsUrl` stays off `UnifiedEvent` and `CalendarApiResponse`.
-- **Hit targets**: The filter row is 28px tall so the calendar keeps the height the 44px category pills were taking. No hover-only affordance. No Framer Motion on the bar.
+- **Hit targets**: Each filter button is 44px tall (constitution Principle I). The row keeps the calendar height by absorbing the header bottom padding and the view top padding. No hover-only affordance. No Framer Motion on the bar.
 
 ## Requirements
 
@@ -147,7 +147,7 @@ app/page.tsx (server, unchanged)
     DashboardShell (unchanged)
       header: ClockWidget | WeatherWidget | LockControl
       main: CalendarViewMachine
-        FilterBar          28px, Filters: dot + calendarLabel per calendarId
+        FilterBar          44px, Filters: dot + calendarLabel per calendarId
         month | week | day flex-1, existing navigation and geometry
 ```
 
@@ -155,7 +155,7 @@ PIN-gate, `/api/calendar`, and `/api/weather` stay as they are. The shell does n
 
 ## Success Criteria
 
-- **SC-001**: At 1180×820 the filter row is one 28px line under the unchanged header on the 4-week, week, and day views, labeled "Filters:" with one colored calendar per loaded calendar. The document does not scroll. At 1366×1024 and 1920×1080 the stage fills the viewport and the filter row stays one line.
+- **SC-001**: At 1180×820 the filter row is one 44px line under the header on the 4-week, week, and day views, labeled "Filters:" with one colored calendar per loaded calendar. The document does not scroll. At 1366×1024 and 1920×1080 the stage fills the viewport and the filter row stays one line.
 - **SC-002**: Turning off Alex on today's demo data hides "Standup" and "Deep work block" and keeps "Client call" (`#ec4899`), "Family dinner" (`#10b981`), and "School pickup" (`#8b5cf6`). Alex's dot uses `#6366f1`, the same hex as the Standup chip border. The calendar request stays `GET /api/calendar` with no query string, and the toggle does not itself send another calendar request.
 - **SC-003**: `activeFilters` survives opening a day, opening a week, and returning to 4 weeks. Turning the hidden calendar back on restores its events. Hiding every calendar shows an empty day ("No events") and does not show "Calendar unavailable".
 - **SC-004**: Phase 6 navigation is unchanged: today-anchored 4-week grid, 44px week chevron, day cells open that day, day toolbar is Week / date with chevrons / "4 weeks", week toolbar is empty left / range with chevrons / "4 weeks", and today plus the first of a month keep the month name in the cell.
@@ -183,6 +183,6 @@ PIN-gate, `/api/calendar`, and `/api/weather` stay as they are. The shell does n
 
 | Invariant | How this spec honors it |
 |-----------|-------------------------|
-| I Viewport | The filter row is 28px under the full header; 1180×820, 1366×1024, and 1920×1080 keep zero document scroll; the only scroller remains the week time grid with `overscroll-behavior: contain` |
+| I Viewport | The filter row is 44px under the full header with 44px-tall buttons; 1180×820, 1366×1024, and 1920×1080 keep zero document scroll; the only scroller remains the week time grid with `overscroll-behavior: contain` |
 | II Privacy | Chips use `calendarId`, `calendarLabel`, and `calendarColor` from the event payload; no `icsUrl`, PIN, or coordinates; `lib/config.ts` stays off the client |
 | III Appliance | Existing 600s SWR hook, no new request on toggle, no `setInterval`, no idle timer, no session lock, filtered last-known events or the existing unavailable line |

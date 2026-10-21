@@ -226,7 +226,7 @@ export default function WeekView({
   }
 
   return (
-    <section aria-label="Week" className="flex h-full min-h-0 flex-col overflow-hidden px-6 pt-2 pb-3">
+    <section aria-label="Week" className="flex h-full min-h-0 flex-col overflow-hidden px-6 pb-3">
       <ViewToolbar
         title={`${new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", timeZone: timezone }).format(days[0])} – ${new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", timeZone: timezone }).format(days[6])}`}
         previousLabel="Previous week"

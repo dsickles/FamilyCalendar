@@ -21,7 +21,7 @@ export default function FilterBar({ activeFilters, onChange }: FilterBarProps) {
     <div
       role="group"
       aria-label="Filters"
-      className="flex h-7 shrink-0 items-center gap-4 overflow-hidden px-6"
+      className="flex h-11 shrink-0 items-center gap-4 overflow-hidden px-6"
     >
       <span className="shrink-0 text-sm text-text-secondary">Filters:</span>
       {calendars.map((calendar) => {
@@ -32,7 +32,7 @@ export default function FilterBar({ activeFilters, onChange }: FilterBarProps) {
             type="button"
             aria-pressed={shown}
             onClick={() => onChange(toggleCalendar(activeFilters, calendar.id, calendarIds))}
-            className={`inline-flex h-7 shrink-0 items-center gap-1.5 text-sm text-text-primary ${
+            className={`inline-flex h-11 shrink-0 items-center gap-1.5 text-sm text-text-primary ${
               shown ? "" : "opacity-35"
             }`}
           >

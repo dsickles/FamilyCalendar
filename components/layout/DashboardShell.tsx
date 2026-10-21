@@ -15,7 +15,7 @@ export default function DashboardShell({
 }: DashboardShellProps) {
   return (
     <div className="flex h-full min-h-0 flex-col overflow-hidden">
-      <header className="flex items-center gap-6 px-6 pt-4 pb-2">
+      <header className="flex items-center gap-6 px-6 pt-4">
         <div className="min-w-0 shrink-0">{clock}</div>
         <div className="ml-auto flex min-w-0 items-center gap-4">
           {weather}

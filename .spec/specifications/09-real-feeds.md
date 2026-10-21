@@ -59,7 +59,7 @@ The layout code stays as Phase 4 through Phase 8 left it. This phase checks it o
 | 1920×1080 | The stage fills that viewport. |
 | Smaller than 1180 on either edge | The 1180×820 layout scales down. No document scrollbar. |
 
-On each size: `document` scroll position stays 0, `scrollHeight` does not exceed the layout viewport, background stays `#0a0a0f`. Contained vertical scroll exists only inside the week time grid (`overflow-y: auto`, `overscroll-behavior: contain`). Month and day do not scroll the document. Header tap targets that are already 44×44 stay that size. The filter row stays 28px.
+On each size: `document` scroll position stays 0, `scrollHeight` does not exceed the layout viewport, background stays `#0a0a0f`. Contained vertical scroll exists only inside the week time grid (`overflow-y: auto`, `overscroll-behavior: contain`). Month and day do not scroll the document. Header tap targets that are already 44×44 stay that size. The filter row stays 44px with 44px-tall chips.
 
 Run this on `http://localhost:3000` with no `CAL_*_URL` (demo mode), on month, week, and day. Do not point the check at a live family feed.
 
