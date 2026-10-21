@@ -3,7 +3,7 @@
 > Canonical Spec Kit copy: `.specify/memory/constitution.md` (v1.2.0).
 > This file is the reviewable extract of the same ratification.
 >
-> **Status**: v1.1.0 approved 2026-09-21. v1.2.0 amended 2026-10-20 (public demo deployment, phone best-effort); pending owner approval. Implementation progress through Phase 9 is in `.spec/project.md`.
+> **Status**: v1.1.0 approved 2026-09-21. v1.2.0 (public demo deployment, phones and portrait best-effort) approved 2026-10-20 via PR #4. Implementation progress through Phase 9 is in `.spec/project.md`.
 
 ## Core Principles
 
