@@ -57,7 +57,7 @@ These are already in the tree. This phase does not rebuild them and does not rev
 - 1180×820 is the primary iPad Air 2020 landscape size and fills that viewport. 1366×1024 and 1920×1080 fill those viewports. Below 1180 on either edge, `.kiosk-stage` scales the 1180×820 layout down. `html` and `body` stay fixed with `overflow: hidden`.
 - The 4-week grid is anchored on today. Each week row has a 44px (`2.75rem`) chevron that opens that Sunday–Saturday week. A day cell opens that day. There is no current-month label. The day number sits in the upper left. Today also has a stamp in the today-ring color, plus the existing highlight. The first day of the next month keeps a centered shorthand (`OCT`) while the day number stays left. Weekend cells are slightly darker. A day shows every event that fits. A "+N more" row appears only when the next event would not fit, and that row takes one slot.
 - Day toolbar: **Week** on the left, the date in the middle with a chevron on each side, **4 weeks** on the right. Week toolbar: empty left slot, chevrons flanking the range, **4 weeks** on the right.
-- Filter chips are one per calendar, labeled "Filters:", with a dot in `calendarColor`. The row is 28px. `activeFilters` starts `[]` (show all). Hiding a calendar survives day, week, 4-week, and idle returns. Chips subset events already returned by `GET /api/calendar`. They do not refetch and they do not add query parameters.
+- Filter chips are one per calendar, labeled "Filters:", with a dot in `calendarColor`. The row is 44px with 44px-tall chips (amended by DAS-85). `activeFilters` starts `[]` (show all). Hiding a calendar survives day, week, 4-week, and idle returns. Chips subset events already returned by `GET /api/calendar`. They do not refetch and they do not add query parameters.
 - Week all-day chips line up with the hour columns. The day headers and the all-day row leave room for the week-grid scrollbar.
 - In development, `/?demo=1` shows demo calendars. `/` stays the live feed. On 2026-09-22 the demo counts are: Sep 20–24 show 1 through 5 items, Sep 26–28 show 6 through 8, and Sep 25, Oct 1, and Oct 14 are the overflow days. Three titles are long enough to ellipsize.
 
@@ -94,7 +94,7 @@ The chevrons stay for a precise tap. A horizontal swipe on the day list moves on
 1. **Given** Day view, **When** a qualifying leftward swipe ends on the event list, **Then** the selected day moves forward one dashboard day, the same as the next-day chevron. A qualifying rightward swipe moves backward one day. The toolbar still shows Week, the date with a chevron on each side, and "4 weeks".
 2. **Given** Week view, **When** a qualifying swipe ends on the day-header row or the all-day band, **Then** the Sunday–Saturday range moves one week in that direction, the same as the range chevrons. "4 weeks" stays on the right. The empty left slot stays empty.
 3. **Given** Week view, **When** the gesture begins inside "Week hours", **Then** the selected week does not change. The grid still scrolls vertically, `scrollHeight` is greater than the client height, and `overscroll-behavior` is `contain`. Document scroll position stays 0.
-4. **Given** Month view or the filter row, **When** the operator drags horizontally, **Then** the mode and the visible period do not change because of that drag. Filter chips still toggle on a tap. The filter row stays 28px and `overflow: hidden`.
+4. **Given** Month view or the filter row, **When** the operator drags horizontally, **Then** the mode and the visible period do not change because of that drag. Filter chips still toggle on a tap. The filter row stays 44px and `overflow: hidden`.
 5. **Given** any of the three views at 1180×820, 1366×1024, or 1920×1080, **When** a swipe or an idle return has just run, **Then** the stage fills that viewport and the document `scrollHeight` does not exceed the layout viewport. A window smaller than 1180×820 on either edge still scales the 1180×820 layout down.
 
 ---
@@ -109,7 +109,7 @@ The chevrons stay for a precise tap. A horizontal swipe on the day list moves on
 - **Week grid**: Do not set `touch-action` or overflow on "Week hours" in a way that disables vertical pan. Do not add `overflow: auto` or `overflow: scroll` to the document, the day list, the filter row, the header, the all-day band, or a month cell.
 - **Secrets**: The only new client prop is the number `idleTimeoutMs`. Do not pass latitude, longitude, `cacheRevalidateSeconds`, calendar sources, `icsUrl`, or anything derived from `DASHBOARD_PIN`. Client modules still do not import `lib/config.ts`.
 - **Demo versus live**: `/?demo=1` in development is the demo calendar. `/` stays the live feed. Idle and swipe behave the same on both. Neither path may lock the session.
-- **Hit targets**: Chevrons, the week-row chevron, Week, and "4 weeks" stay at least 44×44pt. The filter row stays 28px.
+- **Hit targets**: Chevrons, the week-row chevron, Week, and "4 weeks" stay at least 44×44pt, and so do the filter chips (DAS-85).
 
 ## Requirements
 
@@ -166,7 +166,7 @@ app/page.tsx (server)
 - **SC-001**: On week view and on day view, 90 seconds without a pointer press or a wheel returns the 4-week grid anchored on today. A hidden calendar is still hidden. The calendar request is not repeated because of the timeout.
 - **SC-002**: On month view, the same 90 seconds leaves the grid, the filters, and the URL in place. Across all three, the network shows no `POST /api/auth/lock` and the page does not become `/unlock`.
 - **SC-003**: A qualifying horizontal swipe on the day list steps one day. The same swipe on the week day headers or the all-day band steps one week. Chevrons still perform those steps. A drag that begins in the week time grid does not step the week, and that grid still scrolls vertically with `overscroll-behavior: contain`.
-- **SC-004**: At 1180×820, 1366×1024, and 1920×1080 the stage fills the viewport after an idle return and after a swipe. The document does not scroll. Below 1180 on either edge the existing scale still applies. The header stays one row. The filter row stays 28px.
+- **SC-004**: At 1180×820, 1366×1024, and 1920×1080 the stage fills the viewport after an idle return and after a swipe. The document does not scroll. Below 1180 on either edge the existing scale still applies. The header stays one row. The filter row stays 44px.
 - **SC-005**: Client bundles gain the numeric timeout only. They still contain no PIN, no ICS URL, and no latitude or longitude. `lib/config.ts` is not imported by a client module. The pending timeout is cleared on unmount.
 
 ## Assumptions

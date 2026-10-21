@@ -170,7 +170,7 @@ export default function MonthView({
   return (
     <section
       aria-label="Month"
-      className="flex h-full min-h-0 flex-col overflow-hidden px-6 pt-4 pb-3"
+      className="flex h-full min-h-0 flex-col overflow-hidden px-6 pt-2 pb-3"
     >
       {unavailable ? (
         <p className="shrink-0 pb-2 text-sm text-text-muted">Calendar unavailable</p>

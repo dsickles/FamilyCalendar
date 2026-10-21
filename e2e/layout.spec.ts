@@ -75,8 +75,6 @@ for (const viewport of VIEWPORTS) {
               "button, a[href], [role='button'], input, select",
             ),
           ]
-            // Spec 07 keeps the filter row at 28px by design.
-            .filter((el) => !el.closest("[role='group'][aria-label='Filters']"))
             .filter((el) => el.checkVisibility())
             .map((el) => {
               const box = el.getBoundingClientRect();

@@ -151,7 +151,7 @@ export default function DayView({
   }
 
   return (
-    <section aria-label="Day" className="flex h-full min-h-0 flex-col overflow-hidden px-6 pt-2 pb-3">
+    <section aria-label="Day" className="flex h-full min-h-0 flex-col overflow-hidden px-6 pb-3">
       <ViewToolbar
         title={heading}
         previousLabel="Previous day"
