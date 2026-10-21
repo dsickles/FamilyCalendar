@@ -43,16 +43,16 @@ export default function UnlockPage() {
     if (!lockedUntil) {
       return;
     }
-    const id = window.setInterval(() => setNow(Date.now()), 1000);
+    const id = window.setInterval(() => {
+      const tick = Date.now();
+      setNow(tick);
+      if (tick >= lockedUntil) {
+        setLockedUntil(null);
+        setMessage("Enter PIN to continue");
+      }
+    }, 1000);
     return () => window.clearInterval(id);
   }, [lockedUntil]);
-
-  useEffect(() => {
-    if (lockedUntil && now >= lockedUntil) {
-      setLockedUntil(null);
-      setMessage("Enter PIN to continue");
-    }
-  }, [lockedUntil, now]);
 
   useEffect(() => {
     let cancelled = false;

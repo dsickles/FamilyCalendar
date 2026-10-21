@@ -3,7 +3,7 @@
 **Feature ID**: `09-real-feeds`
 **Created**: 2026-09-25
 **Status**: Review complete 2026-09-25. Implemented 2026-09-25 (T056–T058). Do not start a Phase 10.
-**Input**: `.spec/project.md` Phase 9 ("Real feeds, device test, README"). `.spec/project.md` still lists Phases 3–9 as deferred. Phases 1, 1.5, 2, 3, 4, 5, 6, 7, and 8 are implemented (through T055). Trust `.spec/specifications/01-core-and-security.md` through `.spec/specifications/08-idle-reset.md` and `.spec/tasks/01-core-tasks.md` through `.spec/tasks/08-idle-tasks.md`. Where those specs disagree with the tree, trust the code.
+**Input**: `.spec/project.md` Phase 9 ("Real feeds, device test, README"). Phases 1, 1.5, 2, 3, 4, 5, 6, 7, and 8 are implemented (through T055). Trust `.spec/specifications/01-core-and-security.md` through `.spec/specifications/08-idle-reset.md` and `.spec/tasks/01-core-tasks.md` through `.spec/tasks/08-idle-tasks.md`. Where those specs disagree with the tree, trust the code.
 **Constitution check**: Principle I (1180×820 fills that viewport; 1366×1024 and 1920×1080 fill those viewports; below 1180 on either edge the 1180×820 layout scales down; zero document scroll; contained vertical scroll only inside the week time grid with `overscroll-behavior: contain`; 44×44pt targets), Principle II (live `CAL_*_URL` values stay in env only; demo mode when none are set; no PIN, ICS URL, or live family event in git, docs, or client bundles), Principle III (existing feed timeouts, cache, health probe, and idle view-reset stay as they are)
 **Project context**: `.spec/project.md`
 **Depends on**: the implemented shell through Phase 8. Do not reopen the PIN-gate, calendar engine, weather engine, clock, layout, month, week, day, filters, idle reset, swipe, or `LockControl` unless a Phase 9 check shows one of them is broken.
@@ -135,7 +135,6 @@ The kiosk is accepted on the iPad Air 2020 landscape size and on the two larger 
 - **`/?demo=1` in production**: Ignored. Live deployments keep the PIN-gate and the live fetch.
 - **Example comment in `.env.example`**: The committed template may keep a non-secret shape hint. It must not gain a real host path, token, or household calendar. The README does not copy a filled URL.
 - **Scratch file**: `cal-html.txt` is an untracked local dump. Do not commit it. Do not quote its contents into the README.
-- **Stale project table**: `.spec/project.md` still marks Phases 3–9 deferred. This phase does not rewrite that table.
 - **Broken shell during the device check**: Fix only the overflow or scale regression that fails the gate. Do not restyle month, week, day, filters, idle, or swipe.
 
 ## Requirements
