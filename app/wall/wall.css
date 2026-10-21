@@ -51,16 +51,21 @@
   line-height: 1.25;
 }
 
-/* :where keeps the reset at element specificity so component classes win. */
-:where(.w-root) button {
-  font: inherit;
-  color: inherit;
-  background: none;
-  border: 0;
-  padding: 0;
-  margin: 0;
-  cursor: pointer;
-  text-align: inherit;
+/*
+  Button reset. :where keeps it at element specificity so the wall's classes
+  win, and the base layer lets the calendar's Tailwind utilities win too.
+*/
+@layer base {
+  :where(.w-root) button {
+    font: inherit;
+    color: inherit;
+    background: none;
+    border: 0;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    text-align: inherit;
+  }
 }
 
 /* ------------------------------------------------------------ type */
@@ -1511,13 +1516,45 @@ button.w-card:active,
   color: var(--mute);
 }
 
+/*
+  The calendar views are shared with the dark wall at /. Inside /wall they
+  take the paper theme by redefining the Tailwind colour tokens they read,
+  plus the few literal white/black utilities they use.
+*/
 .w-calendar {
+  --color-bg-card: var(--card);
+  --color-bg-card-hover: var(--paper-2);
+  --color-text-primary: var(--ink);
+  --color-text-secondary: var(--ink-2);
+  --color-text-muted: var(--mute);
+  --color-border: var(--line);
+  --color-today-ring: var(--ink);
+
   height: 100%;
   overflow: hidden;
-  border-radius: calc(22 * var(--u));
-  background: #0a0a0f;
-  color: rgb(255 255 255 / 0.9);
-  padding-top: calc(10 * var(--u));
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.w-calendar .bg-white\/5 {
+  background-color: var(--card);
+}
+
+.w-calendar .bg-white\/8 {
+  background-color: #fff;
+}
+
+.w-calendar .bg-black\/40 {
+  background-color: rgb(17 17 17 / 0.04);
+}
+
+.w-calendar .ring-white\/15 {
+  --tw-ring-color: var(--ink);
+}
+
+.w-calendar [role="group"][aria-label="Filters"] {
+  padding-left: 0;
+  padding-right: 0;
 }
 
 .w-boot {
