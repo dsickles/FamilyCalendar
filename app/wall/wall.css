@@ -1530,6 +1530,14 @@ button.w-card:active,
   --color-border: var(--line);
   --color-today-ring: var(--ink);
 
+  /* The shared views are sized for the old wall's small text. Scale their
+     type and spacing up to the wall's sizes so they read from across the room. */
+  --spacing: calc(6 * var(--u));
+  --text-xs: calc(20 * var(--u));
+  --text-sm: calc(22 * var(--u));
+  --text-base: calc(24 * var(--u));
+  --text-lg: calc(28 * var(--u));
+
   height: 100%;
   overflow: hidden;
   background: var(--paper);
@@ -1546,6 +1554,22 @@ button.w-card:active,
 
 .w-calendar .bg-black\/40 {
   background-color: rgb(17 17 17 / 0.04);
+}
+
+/* The Week / 4 weeks toolbar's side columns are 7rem, too narrow for the
+   bigger pill labels. */
+.w-calendar .grid-cols-\[7rem_minmax\(0\,1fr\)_7rem\] {
+  grid-template-columns: calc(200 * var(--u)) minmax(0, 1fr) calc(200 * var(--u));
+  /* Room for the pill rings, which the view's overflow would clip. */
+  padding-block: calc(4 * var(--u));
+}
+
+.w-calendar .rounded-full {
+  white-space: nowrap;
+}
+
+.w-calendar .text-\[10px\] {
+  font-size: calc(15 * var(--u));
 }
 
 .w-calendar .ring-white\/15 {
