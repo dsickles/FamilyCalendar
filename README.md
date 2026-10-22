@@ -44,6 +44,15 @@ The screen opens on a 4-week month grid. The header is the clock, current weathe
 - **Walk away.** After about 90 seconds with no touch, a week or a day returns to the 4-week grid on its own. The screen does not lock.
 - **Lock.** This control exists only after `DASHBOARD_PIN` and at least one calendar URL are set in `.env.local`. Tap the lock icon at the right of the header, then confirm **Lock dashboard?**. The PIN pad comes back. Cancel leaves the wall unlocked. Demo mode has no lock icon. Five wrong PINs from the same device within 15 minutes lock that PIN pad. Further tries, including the right PIN, wait until those 15 minutes are over.
 
+### Tabbed wall prototype (`/wall`)
+
+A clickable prototype of the redesign sits beside the current wall. Run `npm run dev` and open `http://localhost:3000/wall`. It has a left rail with Today, Calendar, Meals, Shopping, To-dos and Photos.
+
+- Calendar and weather are the real ones (demo data until feeds are set). Meals, the shopping list, to-dos, bot notes and photos are sample data kept in your browser's local storage. Nothing is saved on the server.
+- **Bots** at the bottom of the rail plays the part of a bot: add list items, post a note, add a to-do detail, swap a dinner. It can also jump the clock to see Today in the morning or evening, and reset the sample data.
+- `http://localhost:3000/wall/list` is the phone page for adding to the list and to-dos. It syncs with the wall only between tabs of the same browser.
+- After about 90 seconds with no touch, any tab except Photos returns to Today.
+
 ## Getting Started
 
 ### Demo on your computer

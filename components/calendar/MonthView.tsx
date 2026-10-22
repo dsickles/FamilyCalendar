@@ -7,6 +7,7 @@ import {
   getDayBounds,
   getWeekBounds,
   getWindowStart,
+  type TimeFormat,
   type WeekStartDay,
 } from "@/lib/date-utils";
 import { eventsMatchingFilters } from "@/lib/calendar-filters";
@@ -19,6 +20,8 @@ type MonthViewProps = {
   activeFilters: string[];
   onSelectDay: (dateKey: string) => void;
   onSelectWeek: (weekStartKey: string) => void;
+  // When set, timed events that start on a day show their start time first.
+  timeFormat?: TimeFormat;
 };
 
 const DAY_COUNT = 28;
@@ -72,6 +75,23 @@ function dayHeading(
   return { day: parts.day, month };
 }
 
+// "9a", "4:30p" in 12h and "16:30" in 24h, short enough for a chip.
+function chipTime(date: Date, format: TimeFormat, timeZone: string): string {
+  const parts = new Intl.DateTimeFormat("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: format === "12h",
+    timeZone,
+  }).formatToParts(date);
+  const value = (type: string) => parts.find((part) => part.type === type)?.value ?? "";
+  if (format === "24h") {
+    return `${value("hour")}:${value("minute")}`;
+  }
+  const minute = value("minute");
+  const suffix = value("dayPeriod").toLowerCase().charAt(0);
+  return `${value("hour")}${minute === "00" ? "" : `:${minute}`}${suffix}`;
+}
+
 function isWeekend(day: Date, timeZone: string): boolean {
   const name = new Intl.DateTimeFormat("en-US", {
     weekday: "short",
@@ -105,6 +125,7 @@ export default function MonthView({
   activeFilters,
   onSelectDay,
   onSelectWeek,
+  timeFormat,
 }: MonthViewProps) {
   const { data, error } = useCalendar();
   const [today, setToday] = useState<Date | null>(null);
@@ -278,16 +299,28 @@ export default function MonthView({
                     ref={key === probeKey ? chipListRef : undefined}
                     className="mt-1 flex min-h-0 flex-1 flex-col gap-0.5 overflow-hidden"
                   >
-                    {visibleChips.map((event) => (
-                      <div
-                        key={event.id}
-                        data-event-chip=""
-                        className="truncate rounded-sm bg-white/5 py-0.5 pr-1 pl-1.5 text-xs leading-tight text-text-primary"
-                        style={{ borderLeft: `3px solid ${event.calendarColor}` }}
-                      >
-                        {event.title}
-                      </div>
-                    ))}
+                    {visibleChips.map((event) => {
+                      const start = new Date(event.startTime);
+                      const time =
+                        timeFormat && !event.isAllDay && zonedDateKey(start, timezone) === key
+                          ? chipTime(start, timeFormat, timezone)
+                          : null;
+                      return (
+                        <div
+                          key={event.id}
+                          data-event-chip=""
+                          className="truncate rounded-sm bg-white/5 py-0.5 pr-1 pl-1.5 text-xs leading-tight text-text-primary"
+                          style={{ borderLeft: `3px solid ${event.calendarColor}` }}
+                        >
+                          {time ? (
+                            <span data-event-time="" className="mr-1 text-text-secondary tabular-nums">
+                              {time}
+                            </span>
+                          ) : null}
+                          {event.title}
+                        </div>
+                      );
+                    })}
                     {moreCount > 0 ? (
                       <div className="truncate px-1 py-0.5 text-xs leading-tight text-text-muted">
                         +{moreCount} more

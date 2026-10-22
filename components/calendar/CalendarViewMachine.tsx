@@ -22,6 +22,8 @@ type CalendarViewMachineProps = {
   timeFormat: TimeFormat;
   idleTimeoutMs: number;
   previewDemo?: boolean;
+  // Show start times on the 4-week grid's event chips.
+  monthTimes?: boolean;
 };
 
 const DEFAULT_IDLE_TIMEOUT_MS = 90_000;
@@ -64,6 +66,7 @@ export default function CalendarViewMachine({
   timeFormat,
   idleTimeoutMs,
   previewDemo = false,
+  monthTimes = false,
 }: CalendarViewMachineProps) {
   const [view, setView] = useState<CalendarViewState>(initialState);
   const timeoutMs = resolveIdleTimeout(idleTimeoutMs);
@@ -189,6 +192,7 @@ export default function CalendarViewMachine({
       activeFilters={view.activeFilters}
       onSelectDay={(dateKey) => openDay(dateKey, true)}
       onSelectWeek={openWeek}
+      timeFormat={monthTimes ? timeFormat : undefined}
     />
   );
 
