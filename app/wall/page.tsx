@@ -30,6 +30,7 @@ export default async function WallPage({ searchParams }: PageProps<"/wall">) {
                   timeFormat={config.timeFormat}
                   idleTimeoutMs={config.idleTimeoutMs}
                   previewDemo={previewDemo}
+                  monthTimes
                 />
               }
             />

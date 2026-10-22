@@ -51,3 +51,13 @@ for (const viewport of VIEWPORTS) {
     }
   });
 }
+
+test("Calendar tab shows start times on the 4-week grid, and / does not", async ({ page }) => {
+  await page.goto("/wall#calendar");
+  const month = page.getByRole("region", { name: "Month" });
+  await expect(month.locator("[data-event-time]").first()).toHaveText(/^\d{1,2}(:\d{2})?[ap]?$/);
+
+  await page.goto("/");
+  await expect(page.locator("[data-event-chip]").first()).toBeVisible();
+  await expect(page.locator("[data-event-time]")).toHaveCount(0);
+});
