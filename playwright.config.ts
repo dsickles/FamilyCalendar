@@ -33,7 +33,7 @@ export default defineConfig({
   projects: [
     {
       name: "demo",
-      testMatch: ["layout.spec.ts", "demo.spec.ts"],
+      testMatch: ["layout.spec.ts", "demo.spec.ts", "wall.spec.ts"],
       use: { baseURL: `http://127.0.0.1:${DEMO_PORT}` },
     },
     {
