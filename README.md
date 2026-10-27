@@ -1,24 +1,26 @@
 # Family Wall Dashboard
 
-An **ad-free and zero-subscription family kiosk**: a modular, touch-first, full-screen PWA that a household can glance at from about three feet. Think Cozi or DAKboard, without a monthly bill.
+An **ad-free and zero-subscription family kiosk** for a 15.6" wall frame: a touch-first, tabbed family wall that a household can read from across the kitchen. Today is the home screen; Calendar, Meals, Shopping, To-dos and Photos sit on a left rail. Think Skylight, Cozi or DAKboard, without a monthly bill.
 
-This is a wall appliance, not a general website and not a SaaS product. A public clone boots **demo mode** with sample events. A live install (Docker on a NAS, or optionally Vercel) loads private ICS calendars and local weather **behind the same PIN-gate**. After unlock, the wall is view-only until someone explicitly locks it. Idle time returns the calendar to the month grid. It does not bring back the PIN.
+The target device is the **Anna Bella PF1508** frame (Android 15, Android System WebView 124, 1920×1080), running a small kiosk app that loads the wall. A public clone boots **demo mode** with sample data. The live install runs on Vercel behind a **PIN-gate**, with a phone page for adding to the list and a keyed API for bots.
 
-**Public demo:** https://familycalendar-demo.vercel.app — empty environment, sample events, no PIN. A live family install (PIN and private calendars) is not linked in this README.
+> **Where the code is today.** The tabbed wall is a working prototype at `/wall` (calendar and weather are real; lists, meals and photos are sample data in your browser). `/` still serves the earlier iPad calendar wall described under "Using the wall" below. The plan to finish the frame build is in [`.spec/project.md`](.spec/project.md), Phases 10–15. Phase 10 moves the tabbed wall to `/` and retires the iPad wall.
+
+**Public demo:** https://familycalendar-demo.vercel.app — empty environment, sample data, no PIN. A live family install (PIN and private calendars) is not linked in this README.
 
 ## Why it exists
 
 | Intent | Meaning |
 |--------|---------|
-| Wall appliance | Always-on landscape kiosk (iPad + Guided Access) |
-| Family overlay | Multiple calendars: people, shared, utilities, holidays |
-| Touch-first | 44×44pt targets, no hover-only UI |
-| Zero subscription | Self-hosted; Open-Meteo weather; ICS feeds you already have |
+| Wall appliance | Always-on 15.6" frame, kiosk app as Home, Today as the resting screen |
+| Family hub | Calendars, weather, meals, one shopping list, to-dos, notes, photos |
+| Touch-first | 44×44 px targets, no hover-only UI |
+| Zero subscription | Free tiers only; Open-Meteo weather; ICS feeds you already have |
 | Portfolio-safe | Public repo + demo data; live family data never in git or client JS |
 
-Primary hardware is an **iPad Air (4th gen, 2020)** in landscape (**1180×820**). The stage also fills **1366×1024** and **1920×1080**. Below 1180 on either edge, that 1180×820 layout scales down. The document does not scroll. The week time grid is the only vertical scroller.
+The wall is built for **1920×1080** on the frame, and every tab fills it with no page scroll. Other screens are best-effort: the wall scales down to fit.
 
-## What you get
+## What runs today
 
 - Next.js App Router PWA (standalone, landscape)
 - Demo mode when no calendar URLs are configured
@@ -252,8 +254,11 @@ npm run build
 
 | Doc | Path |
 |-----|------|
-| Constitution | [`.spec/constitution.md`](.spec/constitution.md) |
-| Project context | [`.spec/project.md`](.spec/project.md) |
+| Constitution (v2.0.0) | [`.spec/constitution.md`](.spec/constitution.md) |
+| Project context, decisions, phase plan | [`.spec/project.md`](.spec/project.md) |
+| Platform baseline | [`.spec/specifications/00-platform-baseline.md`](.spec/specifications/00-platform-baseline.md) |
+| Phase specs (10–15) | [`.spec/specifications/`](.spec/specifications/) |
+| Phase task lists | [`.spec/tasks/`](.spec/tasks/) |
 
 ## License
 
